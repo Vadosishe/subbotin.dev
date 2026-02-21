@@ -14,7 +14,8 @@ export function ProfileCard() {
     };
 
     return (
-        <div className="bento-card col-span-1 md:col-span-2 row-span-2 rounded-3xl p-8 flex flex-col justify-between h-full relative overflow-hidden group">
+        <div className="bento-card col-span-1 md:col-span-2 row-span-2 rounded-3xl p-8 h-full relative overflow-hidden group">
+            {/* Фоновое свечение */}
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-20 -mt-20 transition-transform duration-700 group-hover:scale-110 pointer-events-none" style={{ background: 'var(--card-glow)' }} />
 
             <div className="relative z-10 h-full flex flex-col">
@@ -30,9 +31,11 @@ export function ProfileCard() {
                         <p className="text-base leading-relaxed opacity-60 mb-6 max-w-md">
                             {siteConfig.bio}
                         </p>
-                        <p className="opacity-40 text-xs font-semibold uppercase tracking-widest">
-                            {siteConfig.age} years old • Based in MSK
-                        </p>
+                        <div className="flex items-center gap-3">
+                            <p className="opacity-40 text-xs font-semibold uppercase tracking-widest">
+                                {siteConfig.age} years old • Based in MSK
+                            </p>
+                        </div>
                     </div>
 
                     {/* Фото (1/3) */}
@@ -89,40 +92,6 @@ export function ProfileCard() {
                     </button>
                 </div>
             </div>
-
-
-            <a
-                href={siteConfig.socials.telegram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-            >
-                <Send className="w-4 h-4" />
-                @vlvdvlvd
-            </a>
-
-            <a
-                href={siteConfig.socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-            >
-                <Github className="w-4 h-4" />
-                vadosishe
-            </a>
-
-            <button
-                onClick={copyEmail}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 cursor-pointer"
-                style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
-            >
-                {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Скопировано!" : "Email"}
-            </button>
         </div>
-            </div >
-        </div >
     );
 }
