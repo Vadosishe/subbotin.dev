@@ -8,9 +8,6 @@ export default function Header() {
     return (
         <header className="flex justify-between items-center py-6 px-4 md:px-0 mb-8 border-b border-current/10">
             <div className="flex items-center gap-6">
-                <Link href="/" className="text-xl font-semibold tracking-tight hover:opacity-80 transition-opacity">
-                    vadosishe
-                </Link>
                 <div className="hidden sm:block">
                     <TimeWidget />
                 </div>

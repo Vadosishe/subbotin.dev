@@ -27,12 +27,9 @@ export function TimeWidget() {
     if (!mounted) return null;
 
     return (
-        <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md">
-            <Clock className="w-4 h-4 opacity-50" />
-            <div className="flex flex-col">
-                <span className="text-sm font-mono font-bold leading-none">{time}</span>
-                <span className="text-[10px] opacity-40 leading-none mt-1">MSK</span>
-            </div>
+        <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity cursor-default">
+            <Clock className="w-3.5 h-3.5" />
+            <span className="text-xs font-mono font-medium tracking-tight whitespace-nowrap">{time} MSK</span>
         </div>
     );
 }
