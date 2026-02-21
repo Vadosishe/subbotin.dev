@@ -3,6 +3,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
+
 
 export const metadata: Metadata = {
   title: "Влад Субботин | Tech Explorer & Creator",
@@ -18,6 +20,7 @@ export default function RootLayout({
     <html lang="ru" suppressHydrationWarning>
       <body className="antialiased selection:bg-indigo-500/30">
         <ThemeProvider>
+          <ScrollProgress />
           <div className="max-w-5xl mx-auto flex flex-col min-h-screen px-4 md:px-6">
             <Header />
             <main className="flex-1">

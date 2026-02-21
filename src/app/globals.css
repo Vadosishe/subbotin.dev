@@ -67,18 +67,18 @@ body {
 
 /* === Custom Scrollbar === */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--card-border);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
-  border: 1px solid var(--background);
+  border: 2px solid var(--background);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -88,5 +88,5 @@ body {
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--card-border) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
