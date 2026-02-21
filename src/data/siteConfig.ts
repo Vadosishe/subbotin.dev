@@ -6,6 +6,7 @@ export const siteConfig = {
     role: "Tech Explorer & Creator",
     age: 26,
     email: "vladsubbotin35@gmail.com", // ← Замени на свой email
+    avatar: "/vlad.JPG", // ← Путь к фото в папке public
     bio: "Я разработчик и творец, увлеченный современными технологиями. Создаю полезные инструменты и делюсь своим опытом.",
 
     /** Текст и состояние виджета статуса */

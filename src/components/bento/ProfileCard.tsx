@@ -23,8 +23,16 @@ export function ProfileCard() {
                     <p className="text-lg font-medium" style={{ color: 'var(--muted)' }}>{siteConfig.role}</p>
                     <p className="mt-1 opacity-50">{siteConfig.age} лет</p>
                 </div>
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 flex items-center justify-center" style={{ borderColor: 'var(--card-border)', background: 'var(--card-bg)' }}>
-                    <span className="text-2xl font-bold" style={{ color: 'var(--muted)' }}>VS</span>
+                <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 flex items-center justify-center bg-zinc-900 shadow-xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3" style={{ borderColor: 'var(--card-border)' }}>
+                    {siteConfig.avatar ? (
+                        <img
+                            src={siteConfig.avatar}
+                            alt={siteConfig.name}
+                            className="w-full h-full object-cover"
+                        />
+                    ) : (
+                        <span className="text-2xl font-bold" style={{ color: 'var(--muted)' }}>VS</span>
+                    )}
                 </div>
             </div>
 
