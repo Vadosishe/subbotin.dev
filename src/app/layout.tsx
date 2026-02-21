@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { CommandPalette } from "@/components/ui/CommandPalette";
 
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className="antialiased selection:bg-indigo-500/30">
         <ThemeProvider>
           <ScrollProgress />
+          <CommandPalette />
           <div className="max-w-5xl mx-auto flex flex-col min-h-screen px-4 md:px-6">
             <Header />
             <main className="flex-1">

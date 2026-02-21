@@ -6,6 +6,7 @@ import { ServicesCard } from "@/components/bento/ServicesCard";
 import { StatusWidget } from "@/components/bento/StatusWidget";
 import { TechMarquee } from "@/components/bento/TechMarquee";
 import { GearWidget } from "@/components/bento/GearWidget";
+import { GitHubWidget } from "@/components/bento/GitHubWidget";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import Link from "next/link";
@@ -29,8 +30,8 @@ export default function HomeClient({ latestPosts }: { latestPosts: BlogPostData[
                     </SpotlightCard>
                 </FadeIn>
 
-                {/* Row 3: Blog & Status */}
-                <FadeIn delay={0.3} className="col-span-1 md:col-span-2">
+                {/* Row 3: Blog */}
+                <FadeIn delay={0.3} className="col-span-1 md:col-span-3">
                     <SpotlightCard className="rounded-3xl p-6 md:p-8 h-full flex flex-col justify-between" color="rgba(16, 185, 129, 0.12)">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-bold flex items-center gap-2">
@@ -42,7 +43,7 @@ export default function HomeClient({ latestPosts }: { latestPosts: BlogPostData[
                             </Link>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow">
                             {latestPosts.map((post) => (
                                 <Link
                                     key={post.slug}
@@ -64,20 +65,27 @@ export default function HomeClient({ latestPosts }: { latestPosts: BlogPostData[
                     </SpotlightCard>
                 </FadeIn>
 
+                {/* Row 4: GitHub, Gear, Status */}
                 <FadeIn delay={0.4} className="col-span-1">
-                    <SpotlightCard className="rounded-3xl h-full" color="rgba(34, 197, 94, 0.15)">
-                        <StatusWidget />
+                    <SpotlightCard className="rounded-3xl h-full shadow-2xl" color="rgba(79, 70, 229, 0.15)">
+                        <GitHubWidget />
                     </SpotlightCard>
                 </FadeIn>
 
-                {/* Row 4: Gear & Tech Marquee */}
-                <FadeIn delay={0.5} className="col-span-1 md:col-span-1">
-                    <SpotlightCard className="rounded-3xl h-full" color="rgba(249, 115, 22, 0.1)">
+                <FadeIn delay={0.5} className="col-span-1">
+                    <SpotlightCard className="rounded-3xl h-full shadow-2xl" color="rgba(249, 115, 22, 0.1)">
                         <GearWidget />
                     </SpotlightCard>
                 </FadeIn>
 
-                <FadeIn delay={0.6} className="col-span-1 md:col-span-2">
+                <FadeIn delay={0.6} className="col-span-1">
+                    <SpotlightCard className="rounded-3xl h-full shadow-2xl" color="rgba(34, 197, 94, 0.15)">
+                        <StatusWidget />
+                    </SpotlightCard>
+                </FadeIn>
+
+                {/* Row 5: Tech Marquee */}
+                <FadeIn delay={0.7} className="col-span-1 md:col-span-3">
                     <TechMarquee />
                 </FadeIn>
 
