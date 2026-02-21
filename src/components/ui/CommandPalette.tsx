@@ -16,11 +16,13 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { siteConfig } from "@/data/siteConfig";
+import { useTheme } from "@/components/ThemeProvider";
 
 export function CommandPalette() {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
     const router = useRouter();
+    const { theme, toggleTheme } = useTheme();
 
     const togglePalette = useCallback(() => setIsOpen((prev) => !prev), []);
 
@@ -55,12 +57,10 @@ export function CommandPalette() {
         { id: "github", label: "GitHub", icon: Github, action: () => window.open(siteConfig.socials.github, "_blank") },
         { id: "email", label: "Написать Email", icon: Mail, action: () => window.location.href = `mailto:${siteConfig.email}` },
         {
-            id: "theme", label: "Переключить тему", icon: Moon, action: () => {
-                const html = document.documentElement;
-                const isDark = html.classList.contains('dark');
-                html.classList.toggle('dark', !isDark);
-                localStorage.setItem('theme', !isDark ? 'dark' : 'light');
-            }
+            id: "theme",
+            label: theme === "dark" ? "Переключить на светлую" : "Переключить на темную",
+            icon: theme === "dark" ? Sun : Moon,
+            action: toggleTheme
         },
     ].filter(item => item.label.toLowerCase().includes(query.toLowerCase()));
 
