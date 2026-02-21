@@ -17,8 +17,8 @@ export function ProfileCard() {
         <div className="bento-card col-span-1 md:col-span-2 row-span-2 rounded-3xl p-4 h-full relative overflow-hidden group">
             <div className="flex flex-col md:flex-row gap-4 h-full w-full">
 
-                {/* Левый контейнер: Текст и Соцсети (2/3) */}
-                <div className="md:w-2/3 h-full rounded-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden"
+                {/* Левый контейнер: Текст и Соцсети (60%) */}
+                <div className="md:w-[60%] h-full rounded-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden"
                     style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
 
                     {/* Локальное свечение для текста */}
@@ -74,13 +74,13 @@ export function ProfileCard() {
                     </div>
                 </div>
 
-                {/* Правый контейнер: Фото (1/3) */}
-                <div className="md:w-1/3 h-64 md:h-full rounded-2xl overflow-hidden relative border border-white/5 shadow-2xl group/avatar">
+                {/* Правый контейнер: Фото (40%) */}
+                <div className="md:w-[40%] h-64 md:h-full rounded-2xl overflow-hidden relative border border-white/5 shadow-2xl group/avatar">
                     {siteConfig.avatar ? (
                         <img
                             src={siteConfig.avatar}
                             alt={siteConfig.name}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                         />
                     ) : (
                         <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
