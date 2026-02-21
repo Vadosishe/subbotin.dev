@@ -15,7 +15,6 @@ export function TimeWidget() {
                 now.toLocaleTimeString("ru-RU", {
                     hour: "2-digit",
                     minute: "2-digit",
-                    second: "2-digit",
                     timeZone: "Europe/Moscow",
                 })
             );
@@ -25,21 +24,15 @@ export function TimeWidget() {
         return () => clearInterval(interval);
     }, []);
 
-    if (!mounted) {
-        return (
-            <div className="bento-card col-span-1 rounded-3xl p-6 flex flex-col justify-center items-center text-center h-full min-h-[140px]">
-                <Clock className="w-5 h-5 mb-2" style={{ color: 'var(--muted)' }} />
-                <span className="text-2xl font-mono font-bold tracking-widest">--:--:--</span>
-                <span className="text-xs mt-1" style={{ color: 'var(--muted)' }}>Москва (UTC+3)</span>
-            </div>
-        );
-    }
+    if (!mounted) return null;
 
     return (
-        <div className="bento-card col-span-1 rounded-3xl p-6 flex flex-col justify-center items-center text-center h-full min-h-[140px]">
-            <Clock className="w-5 h-5 mb-2" style={{ color: 'var(--muted)' }} />
-            <span className="text-2xl font-mono font-bold tracking-widest">{time}</span>
-            <span className="text-xs mt-1" style={{ color: 'var(--muted)' }}>Москва (UTC+3)</span>
+        <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md">
+            <Clock className="w-4 h-4 opacity-50" />
+            <div className="flex flex-col">
+                <span className="text-sm font-mono font-bold leading-none">{time}</span>
+                <span className="text-[10px] opacity-40 leading-none mt-1">MSK</span>
+            </div>
         </div>
     );
 }

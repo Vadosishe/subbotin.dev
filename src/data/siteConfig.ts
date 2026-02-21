@@ -5,12 +5,12 @@ export const siteConfig = {
     name: "Влад Субботин",
     role: "Tech Explorer & Creator",
     age: 26,
-    email: "your.email@example.com", // ← Замени на свой email
+    email: "vladsubbotin35@gmail.com", // ← Замени на свой email
     bio: "Я разработчик и творец, увлеченный современными технологиями. Создаю полезные инструменты и делюсь своим опытом.",
 
     /** Текст и состояние виджета статуса */
     status: {
-        text: "Currently building something cool", // ← Меняй этот текст
+        text: "Currently working on something new", // ← Меняй этот текст
         online: true, // true = зелёный пульсирующий, false = серый
     },
 
@@ -21,9 +21,25 @@ export const siteConfig = {
 
     /** Список оборудования (для GearWidget) */
     gear: [
-        { name: "MacBook Pro M3", description: "Основной рабочий инструмент", icon: "💻" },
-        { name: "Keychron K2", description: "Механика на коричневых свичах", icon: "⌨️" },
-        { name: "Logitech MX Master 3S", description: "Для долгой работы без усталости", icon: "🖱️" },
-        { name: "LG UltraFine 4K", description: "Верный помощник для кода", icon: "🖥️" },
+        {
+            name: "Workstation",
+            description: "AMD Ryzen 9 5950X / 32GB RAM / RTX 5070 Ti",
+            icon: "Cpu"
+        },
+        {
+            name: "Display",
+            description: "2x Xiaomi 27\" MiniLED / 200Hz",
+            icon: "Monitor"
+        },
+        {
+            name: "Mobility",
+            description: "MacBook Pro / Remote setup",
+            icon: "Laptop"
+        },
+        {
+            name: "Device",
+            description: "Nothing Phone (2) / Glyph Interface",
+            icon: "Smartphone"
+        },
     ],
 };

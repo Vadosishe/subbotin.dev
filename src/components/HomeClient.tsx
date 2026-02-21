@@ -6,7 +6,6 @@ import { ServicesCard } from "@/components/bento/ServicesCard";
 import { StatusWidget } from "@/components/bento/StatusWidget";
 import { TechMarquee } from "@/components/bento/TechMarquee";
 import { GearWidget } from "@/components/bento/GearWidget";
-import { TimeWidget } from "@/components/bento/TimeWidget";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import Link from "next/link";
@@ -17,22 +16,21 @@ export default function HomeClient({ latestPosts }: { latestPosts: BlogPostData[
     return (
         <div className="pb-10">
             <BentoGrid>
-                {/* Профиль */}
+                {/* Row 1-2: Profile & Services */}
                 <FadeIn delay={0.1} className="col-span-1 md:col-span-2 row-span-2">
                     <SpotlightCard className="h-full rounded-3xl" color="rgba(129, 140, 248, 0.15)">
                         <ProfileCard />
                     </SpotlightCard>
                 </FadeIn>
 
-                {/* Проекты */}
                 <FadeIn delay={0.2} className="col-span-1 md:col-span-1 row-span-2">
                     <SpotlightCard className="h-full rounded-3xl" color="rgba(99, 102, 241, 0.1)">
                         <ServicesCard />
                     </SpotlightCard>
                 </FadeIn>
 
-                {/* Последние записи блога */}
-                <FadeIn delay={0.3} className="col-span-1 md:col-span-2 row-span-1 h-full">
+                {/* Row 3: Blog & Status */}
+                <FadeIn delay={0.3} className="col-span-1 md:col-span-2">
                     <SpotlightCard className="rounded-3xl p-6 md:p-8 h-full flex flex-col justify-between" color="rgba(16, 185, 129, 0.12)">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-bold flex items-center gap-2">
@@ -66,29 +64,20 @@ export default function HomeClient({ latestPosts }: { latestPosts: BlogPostData[
                     </SpotlightCard>
                 </FadeIn>
 
-                {/* Статус */}
-                <FadeIn delay={0.4} className="col-span-1 row-span-1">
-                    <SpotlightCard className="h-full rounded-3xl" color="rgba(34, 197, 94, 0.15)">
+                <FadeIn delay={0.4} className="col-span-1">
+                    <SpotlightCard className="rounded-3xl h-full" color="rgba(34, 197, 94, 0.15)">
                         <StatusWidget />
                     </SpotlightCard>
                 </FadeIn>
 
-                {/* Рабочее место */}
-                <FadeIn delay={0.5} className="col-span-1 row-span-2">
-                    <SpotlightCard className="h-full rounded-3xl" color="rgba(249, 115, 22, 0.1)">
+                {/* Row 4: Gear & Tech Marquee */}
+                <FadeIn delay={0.5} className="col-span-1 md:col-span-1">
+                    <SpotlightCard className="rounded-3xl h-full" color="rgba(249, 115, 22, 0.1)">
                         <GearWidget />
                     </SpotlightCard>
                 </FadeIn>
 
-                {/* Часы */}
-                <FadeIn delay={0.6} className="col-span-1 row-span-1">
-                    <SpotlightCard className="h-full rounded-3xl" color="rgba(255, 255, 255, 0.05)">
-                        <TimeWidget />
-                    </SpotlightCard>
-                </FadeIn>
-
-                {/* Бегущая строка */}
-                <FadeIn delay={0.7} className="col-span-1 md:col-span-2 row-span-1">
+                <FadeIn delay={0.6} className="col-span-1 md:col-span-2">
                     <TechMarquee />
                 </FadeIn>
 
