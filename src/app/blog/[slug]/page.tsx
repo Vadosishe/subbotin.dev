@@ -19,16 +19,20 @@ export async function generateMetadata(props: Params): Promise<Metadata> {
     };
 }
 
+// Это выполняется на сервере для статической генерации
 export async function generateStaticParams() {
     const posts = getSortedPostsData();
     return posts.map((post) => ({
-        slug: post.slug,
+        slug: post.id,
     }));
 }
 
 export default async function Post(props: Params) {
     const params = await props.params;
-    const postData = await getPostData(params.slug);
+    const id = params.slug;
+    const postData = await getPostData(id);
+    const isEn = id.endsWith('.en');
+    const backText = isEn ? "Back to articles" : "Назад к статьям";
 
     return (
         <article className="py-12 px-4 md:px-0 max-w-3xl mx-auto w-full">
@@ -36,7 +40,7 @@ export default async function Post(props: Params) {
                 <div className="mb-8">
                     <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6 group">
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                        Назад к статьям
+                        {backText}
                     </Link>
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
                         {postData.title}

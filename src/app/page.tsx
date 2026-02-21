@@ -2,7 +2,7 @@ import { getSortedPostsData } from "@/lib/markdown";
 import HomeClient from "@/components/HomeClient";
 
 export default function Home() {
-  const latestPosts = getSortedPostsData().slice(0, 2);
+  const allPosts = getSortedPostsData();
 
-  return <HomeClient latestPosts={latestPosts} />;
+  return <HomeClient allPosts={allPosts} />;
 }

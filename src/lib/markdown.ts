@@ -7,7 +7,9 @@ import html from 'remark-html';
 const contentDirectory = path.join(process.cwd(), 'content');
 
 export interface BlogPostData {
-    slug: string;
+    id: string; // Полное имя файла без расширения
+    slug: string; // Часть до первой точки
+    lang: string; // Язык (ru, en)
     title: string;
     date: string;
     excerpt: string;
@@ -25,14 +27,20 @@ export function getSortedPostsData(): BlogPostData[] {
     const allPostsData = fileNames
         .filter((fileName) => fileName.endsWith('.md'))
         .map((fileName) => {
-            const slug = fileName.replace(/\.md$/, '');
+            const id = fileName.replace(/\.md$/, '');
+            const parts = id.split('.');
+            const lang = parts.length > 1 ? parts.pop()! : 'ru';
+            const slug = parts.join('.') || id;
+
             const fullPath = path.join(contentDirectory, fileName);
             const fileContents = fs.readFileSync(fullPath, 'utf8');
 
             const matterResult = matter(fileContents);
 
             return {
+                id,
                 slug,
+                lang,
                 title: matterResult.data.title || slug,
                 date: matterResult.data.date || '',
                 excerpt: matterResult.data.excerpt || '',
@@ -48,12 +56,16 @@ export function getSortedPostsData(): BlogPostData[] {
     });
 }
 
-// Загружает отдельный пост по слагу
-export async function getPostData(slug: string): Promise<BlogPost> {
-    const fullPath = path.join(contentDirectory, `${slug}.md`);
+// Загружает отдельный пост по id (slug.lang)
+export async function getPostData(id: string): Promise<BlogPost> {
+    const fullPath = path.join(contentDirectory, `${id}.md`);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
 
     const matterResult = matter(fileContents);
+
+    const parts = id.split('.');
+    const lang = parts.length > 1 ? parts.pop()! : 'ru';
+    const slug = parts.join('.') || id;
 
     const processedContent = await remark()
         .use(html)
@@ -62,7 +74,9 @@ export async function getPostData(slug: string): Promise<BlogPost> {
     const contentHtml = processedContent.toString();
 
     return {
+        id,
         slug,
+        lang,
         contentHtml,
         title: matterResult.data.title || slug,
         date: matterResult.data.date || '',

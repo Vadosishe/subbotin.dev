@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { projects } from "@/data/projects";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const statusColors: Record<string, string> = {
     active: "bg-green-500/20 text-green-400",
@@ -9,11 +10,13 @@ const statusColors: Record<string, string> = {
 };
 
 export function ServicesCard() {
+    const { t } = useLanguage();
+
     return (
         <div className="bento-card col-span-1 md:col-span-1 row-span-2 rounded-3xl p-6 flex flex-col h-full">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <span className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-sm" style={{ color: 'var(--accent)' }}>🛠</span>
-                Мои поделки
+                {t({ ru: "Мои поделки", en: "My Projects" })}
             </h2>
 
             <div className="flex flex-col gap-4 flex-grow">
@@ -36,7 +39,7 @@ export function ServicesCard() {
                             <ArrowRight className="w-4 h-4 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                         </div>
                         <p className="text-sm line-clamp-2 mt-1" style={{ color: 'var(--muted)' }}>
-                            {project.description}
+                            {t(project.description)}
                         </p>
                     </Link>
                 ))}

@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { Check, Copy, Github, Send } from "lucide-react";
 import { siteConfig } from "@/data/siteConfig";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export function ProfileCard() {
     const [copied, setCopied] = useState(false);
+    const { t } = useLanguage();
 
     const copyEmail = () => {
         navigator.clipboard.writeText(siteConfig.email);
@@ -26,17 +28,17 @@ export function ProfileCard() {
                         style={{ background: 'var(--card-glow)' }} />
 
                     <div className="relative z-10 flex-grow flex flex-col justify-center">
-                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 italic">
                             {siteConfig.name}
                         </h1>
                         <p className="text-xl font-medium mb-4" style={{ color: 'var(--accent)' }}>
-                            {siteConfig.role}
+                            {t(siteConfig.role)}
                         </p>
                         <p className="text-sm md:text-base leading-relaxed opacity-60 mb-6 max-w-sm">
-                            {siteConfig.bio}
+                            {t(siteConfig.bio)}
                         </p>
                         <p className="opacity-40 text-[10px] font-bold uppercase tracking-widest">
-                            {siteConfig.age} years old • Based in MSK
+                            {siteConfig.age} {t(siteConfig.ui.common.age)} • {t(siteConfig.ui.common.location)}
                         </p>
                     </div>
 
@@ -69,7 +71,7 @@ export function ProfileCard() {
                             style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
                         >
                             {copied ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3 text-indigo-400" />}
-                            {copied ? "Скопировано!" : "Email"}
+                            {copied ? t(siteConfig.ui.common.copied) : t(siteConfig.ui.common.email)}
                         </button>
                     </div>
                 </div>

@@ -3,9 +3,13 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageToggle } from "./LanguageToggle";
 import { TimeWidget } from "./bento/TimeWidget";
+import { useLanguage } from "@/components/LanguageProvider";
+import { siteConfig } from "@/data/siteConfig";
 
 export default function Header() {
+    const { t } = useLanguage();
     const openCommandPalette = () => {
         window.dispatchEvent(new CustomEvent("open-command-palette"));
     };
@@ -19,23 +23,9 @@ export default function Header() {
             </div>
 
             <div className="flex items-center gap-4">
-                <nav className="flex gap-6 items-center">
-                    <Link href="/" className="text-sm font-medium opacity-60 hover:opacity-100 transition-opacity">
-                        Home
-                    </Link>
-                    <Link href="/blog" className="text-sm font-medium opacity-60 hover:opacity-100 transition-opacity">
-                        Blog
-                    </Link>
-
-                    <button
-                        onClick={openCommandPalette}
-                        className="p-2 rounded-lg bg-current/5 hover:bg-current/10 transition-colors group flex items-center gap-2"
-                        title="Command Palette (Ctrl+K)"
-                    >
-                        <Search className="w-4 h-4 opacity-60 group-hover:opacity-100" />
-                        <span className="hidden md:block text-[10px] font-bold opacity-40 group-hover:opacity-100 border border-current/20 px-1 rounded">⌘K</span>
-                    </button>
-                </nav>
+                <div className="flex items-center gap-2">
+                    <LanguageToggle />
+                </div>
                 <ThemeToggle />
             </div>
         </header>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Github, GitCommit, Star, ExternalLink, RefreshCw } from "lucide-react";
 import { siteConfig } from "@/data/siteConfig";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface GitHubEvent {
     type: string;
@@ -18,6 +19,7 @@ interface GitHubEvent {
 export function GitHubWidget() {
     const [event, setEvent] = useState<GitHubEvent | null>(null);
     const [loading, setLoading] = useState(true);
+    const { t } = useLanguage();
 
     const fetchActivity = async () => {
         setLoading(true);
@@ -44,21 +46,21 @@ export function GitHubWidget() {
         switch (event.type) {
             case "PushEvent":
                 return {
-                    label: "Pushed to",
+                    label: t({ ru: "Отправил в", en: "Pushed to" }),
                     icon: GitCommit,
-                    detail: event.payload?.commits?.[0]?.message || "Commits"
+                    detail: event.payload?.commits?.[0]?.message || (t({ ru: "Коммиты", en: "Commits" }))
                 };
             case "WatchEvent":
                 return {
-                    label: "Starred",
+                    label: t({ ru: "Оценил", en: "Starred" }),
                     icon: Star,
-                    detail: "Project"
+                    detail: t({ ru: "Проект", en: "Project" })
                 };
             default:
                 return {
-                    label: "Activity in",
+                    label: t({ ru: "Активность в", en: "Activity in" }),
                     icon: Github,
-                    detail: "Repository"
+                    detail: t({ ru: "Репозиторий", en: "Repository" })
                 };
         }
     };
@@ -75,7 +77,9 @@ export function GitHubWidget() {
                 </div>
                 <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-500/10 border border-green-500/20">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-[10px] font-bold text-green-500 uppercase tracking-tighter">Live</span>
+                    <span className="text-[10px] font-bold text-green-500 uppercase tracking-tighter">
+                        {t(siteConfig.ui.github.live)}
+                    </span>
                 </div>
             </div>
 
@@ -95,7 +99,7 @@ export function GitHubWidget() {
                         className="space-y-1"
                     >
                         <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-500">
-                            Latest GitHub Activity
+                            {t(siteConfig.ui.github.title)}
                         </p>
                         <div className="flex items-center gap-2 text-sm font-medium">
                             <activity.icon className="w-3.5 h-3.5 text-indigo-400" />
@@ -107,7 +111,7 @@ export function GitHubWidget() {
                         </p>
                     </motion.div>
                 ) : (
-                    <p className="text-xs opacity-40">No recent activity</p>
+                    <p className="text-xs opacity-40">{t({ ru: "Нет активности", en: "No recent activity" })}</p>
                 )}
             </div>
 
@@ -123,7 +127,7 @@ export function GitHubWidget() {
                     target="_blank"
                     className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors group/link"
                 >
-                    View Git
+                    {t(siteConfig.ui.github.view)}
                     <ExternalLink className="w-3 h-3 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
                 </a>
             </div>
