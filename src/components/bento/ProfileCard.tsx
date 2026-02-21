@@ -17,37 +17,51 @@ export function ProfileCard() {
         <div className="bento-card col-span-1 md:col-span-2 row-span-2 rounded-3xl p-8 flex flex-col justify-between h-full relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -mr-20 -mt-20 transition-transform duration-700 group-hover:scale-110 pointer-events-none" style={{ background: 'var(--card-glow)' }} />
 
-            <div className="flex flex-col md:flex-row justify-between items-start gap-10 z-10 w-full">
-                <div className="flex-1">
-                    <h1 className="text-5xl font-bold tracking-tight mb-3">{siteConfig.name}</h1>
-                    <p className="text-xl font-medium" style={{ color: 'var(--muted)' }}>{siteConfig.role}</p>
-                    <p className="mt-2 opacity-50 text-sm">{siteConfig.age} лет</p>
+            <div className="flex flex-col md:flex-row items-center md:items-stretch gap-8 md:gap-12 z-10 w-full h-full">
+                {/* Текст слева */}
+                <div className="flex-1 flex flex-col justify-center">
+                    <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-br from-white to-white/40 leading-[0.9]">
+                        {siteConfig.name}
+                    </h1>
+                    <p className="text-xl md:text-2xl font-medium tracking-tight mb-4" style={{ color: 'var(--accent)' }}>
+                        {siteConfig.role}
+                    </p>
+
+                    <div className="hidden md:block mb-8">
+                        <p className="text-lg leading-relaxed opacity-60 max-w-sm">
+                            {siteConfig.bio}
+                        </p>
+                    </div>
+
+                    <p className="opacity-40 text-xs font-bold uppercase tracking-widest">
+                        {siteConfig.age} y.o. • Based in MSK
+                    </p>
                 </div>
 
-                <div className="relative shrink-0 self-center md:self-start">
-                    <div className="w-32 h-32 md:w-44 md:h-44 rounded-[2.5rem] overflow-hidden border-2 flex items-center justify-center bg-zinc-900 shadow-2xl transition-all duration-700 group-hover:scale-105 group-hover:-rotate-3" style={{ borderColor: 'var(--card-border)' }}>
+                {/* Огромное фото справа */}
+                <div className="relative shrink-0 flex items-center justify-center">
+                    <div className="w-48 h-48 md:w-64 md:h-64 rounded-[3.5rem] overflow-hidden border-2 flex items-center justify-center bg-zinc-900 shadow-[0_30px_60px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-[1.03] group-hover:-rotate-2" style={{ borderColor: 'var(--card-border)' }}>
                         {siteConfig.avatar ? (
                             <img
                                 src={siteConfig.avatar}
                                 alt={siteConfig.name}
-                                className="w-full h-full object-cover shadow-inner"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                         ) : (
-                            <span className="text-4xl font-bold" style={{ color: 'var(--muted)' }}>VS</span>
+                            <span className="text-7xl font-bold" style={{ color: 'var(--muted)' }}>VS</span>
                         )}
                     </div>
-                    {/* Мягкое свечение за аватаром */}
-                    <div className="absolute -inset-4 bg-indigo-500/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
+                    {/* Многослойное свечение */}
+                    <div className="absolute -inset-10 bg-indigo-500/10 blur-[80px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-[3.5rem] pointer-events-none" />
                 </div>
             </div>
 
 
-            <div className="mt-auto pt-10 z-10">
-                <p className="text-base leading-relaxed max-w-md mb-8" style={{ color: 'var(--muted)' }}>
-                    {siteConfig.bio}
-                </p>
 
+            <div className="mt-8 md:mt-auto z-10 w-full">
                 <div className="flex flex-wrap gap-3">
+
                     <a
                         href={siteConfig.socials.telegram}
                         target="_blank"
