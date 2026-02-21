@@ -18,4 +18,12 @@ export const siteConfig = {
         telegram: "https://t.me/vlvdvlvd",
         github: "https://github.com/vadosishe",
     },
+
+    /** Список оборудования (для GearWidget) */
+    gear: [
+        { name: "MacBook Pro M3", description: "Основной рабочий инструмент", icon: "💻" },
+        { name: "Keychron K2", description: "Механика на коричневых свичах", icon: "⌨️" },
+        { name: "Logitech MX Master 3S", description: "Для долгой работы без усталости", icon: "🖱️" },
+        { name: "LG UltraFine 4K", description: "Верный помощник для кода", icon: "🖥️" },
+    ],
 };
