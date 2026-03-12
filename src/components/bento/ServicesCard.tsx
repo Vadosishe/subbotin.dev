@@ -13,7 +13,7 @@ export function ServicesCard() {
     const { t } = useLanguage();
 
     return (
-        <div className="bento-card col-span-1 md:col-span-1 row-span-2 rounded-3xl p-6 flex flex-col h-full">
+        <div className="flex flex-col h-full p-6">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <span className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-sm" style={{ color: 'var(--accent)' }}>🛠</span>
                 {t({ ru: "Мои поделки", en: "My Projects" })}

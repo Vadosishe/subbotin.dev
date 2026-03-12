@@ -1,0 +1,26 @@
+name: Deploy Next.js to Server
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 64.188.63.123
+          username: root # Внимание: замените root на вашего пользователя (например, ubuntu), если вы используете другого
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/infra/site-next
+            git pull origin prod
+            docker compose build nextjs-site
+            docker compose up -d nextjs-site

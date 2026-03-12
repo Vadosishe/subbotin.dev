@@ -68,7 +68,7 @@ export function GitHubWidget() {
     const activity = event ? getEventDescription(event) : null;
 
     return (
-        <div className="bento-card col-span-1 row-span-1 rounded-3xl p-6 flex flex-col justify-between h-full relative overflow-hidden group">
+        <div className="p-6 flex flex-col justify-between h-full relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl -mr-10 -mt-10 opacity-20 transition-transform duration-700 group-hover:scale-110 pointer-events-none" style={{ background: 'var(--card-glow)' }} />
 
             <div className="relative z-10 flex justify-between items-start">

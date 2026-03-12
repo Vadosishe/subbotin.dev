@@ -5,7 +5,7 @@ export function StatusWidget() {
     const { t } = useLanguage();
 
     return (
-        <div className="bento-card col-span-1 rounded-3xl p-6 flex flex-col justify-center items-center text-center h-full min-h-[140px] relative">
+        <div className="p-6 flex flex-col justify-center items-center text-center h-full min-h-[140px] relative">
             <div className="flex items-center gap-3 mb-2">
                 <span className="relative flex h-3 w-3">
                     {siteConfig.status.online ? (

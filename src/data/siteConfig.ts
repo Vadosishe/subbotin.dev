@@ -4,15 +4,15 @@
 export const siteConfig = {
     name: "Влад Субботин",
     role: {
-        ru: "Tech Explorer & Creator",
-        en: "Tech Explorer & Creator"
+        ru: "HubSpot Admin & Automation Lead",
+        en: "HubSpot Admin & Automation Lead"
     },
     age: 26,
     email: "vladsubbotin35@gmail.com",
     avatar: "/vlad.JPG",
     bio: {
-        ru: "Я разработчик и творец, увлеченный современными технологиями. Создаю полезные инструменты и делюсь своим опытом.",
-        en: "I am a developer and creator passionate about modern technologies. Building useful tools and sharing my experience."
+        ru: " Администрирую HubSpot и связываю процессы через n8n. Постоянно пробую новые технологии: от сборки интерфейсов на React до настройки собственной инфраструктуры и VPN. Беру хаос бизнес-задач и превращаю его в работающие цифровые инструменты.",
+        en: "I manage HubSpot ecosystems and orchestrate workflows using n8n. Always exploring new tech — from building React interfaces to configuring personal infrastructure and VPNs. I take business chaos and transform it into streamlined digital tools."
     },
 
     /** Текст и состояние виджета статуса */
@@ -85,7 +85,7 @@ export const siteConfig = {
             copied: { ru: "Скопировано!", en: "Copied!" },
             email: { ru: "Email", en: "Email" },
             age: { ru: "лет", en: "years old" },
-            location: { ru: "Москва", en: "Based in MSK" }
+            location: { ru: "Россия", en: "Based in Russia" }
         }
     }
 };

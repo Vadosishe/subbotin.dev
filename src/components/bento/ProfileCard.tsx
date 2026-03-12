@@ -16,12 +16,11 @@ export function ProfileCard() {
     };
 
     return (
-        <div className="bento-card col-span-1 md:col-span-2 row-span-2 rounded-3xl p-4 h-full relative overflow-hidden group">
-            <div className="flex flex-col md:flex-row gap-4 h-full w-full">
+        <div className="h-full w-full relative overflow-hidden group">
+            <div className="flex flex-col md:flex-row h-full w-full">
 
                 {/* Левый контейнер: Текст и Соцсети (60%) */}
-                <div className="md:w-[60%] h-full rounded-2xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden"
-                    style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <div className="md:w-[60%] h-full p-6 md:p-10 flex flex-col justify-between relative overflow-hidden">
 
                     {/* Локальное свечение для текста */}
                     <div className="absolute top-0 left-0 w-64 h-64 rounded-full blur-3xl -ml-20 -mt-20 transition-transform duration-700 group-hover:scale-110 pointer-events-none opacity-50"
@@ -77,7 +76,7 @@ export function ProfileCard() {
                 </div>
 
                 {/* Правый контейнер: Фото (40%) */}
-                <div className="md:w-[40%] h-64 md:h-full rounded-2xl overflow-hidden relative border border-white/5 shadow-2xl group/avatar">
+                <div className="md:w-[40%] min-h-[300px] md:h-auto overflow-hidden relative group/avatar">
                     {siteConfig.avatar ? (
                         <img
                             src={siteConfig.avatar}

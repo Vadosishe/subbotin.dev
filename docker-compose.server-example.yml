@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  nextjs-site:
+    build: 
+      context: ./site-next
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - infra_network
+    # ports больше не нужны, так как Nginx Proxy Manager (NPM) обращается внутри сети к контейнеру напрямую по имени 'nextjs-site' и порту '3000'
+
+networks:
+  infra_network:
+    external: true # Предполагается, что сеть infra_network уже создана (например, для NPM)

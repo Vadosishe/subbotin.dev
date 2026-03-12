@@ -4,21 +4,20 @@ import { BlogPostData } from "@/lib/markdown";
 import { BentoGrid } from "@/components/bento/BentoGrid";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
-import { gridConfig } from "@/data/gridConfig";
+import { draftGridConfig } from "@/data/draftGridConfig";
 import { RenderBlock } from "@/components/bento/Registry";
 
-export default function HomeClient({ allPosts }: { allPosts: BlogPostData[] }) {
+export default function DraftHomeClient({ allPosts }: { allPosts: BlogPostData[] }) {
     return (
         <div className="pb-10">
+            <h1 className="text-center text-sm opacity-30 mb-8 uppercase tracking-widest">Draft Version (V2)</h1>
             <BentoGrid>
-                {gridConfig.map((block) => {
-                    // Подготовка пропсов для специфичных блоков
+                {draftGridConfig.map((block) => {
                     const blockProps = { ...block.props };
                     if (block.type === 'BlogWidget') {
                         blockProps.allPosts = allPosts;
                     }
 
-                    // Формирование классов сетки
                     const colSpanClass = block.colSpan === 3
                         ? "col-span-1 md:col-span-3"
                         : block.colSpan === 2
