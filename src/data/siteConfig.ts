@@ -11,8 +11,8 @@ export const siteConfig = {
     email: "vladsubbotin35@gmail.com",
     avatar: "/vlad.JPG",
     bio: {
-        ru: " Администрирую HubSpot и связываю процессы через n8n. Постоянно пробую новые технологии: от сборки интерфейсов на React до настройки собственной инфраструктуры и VPN. Беру хаос бизнес-задач и превращаю его в работающие цифровые инструменты.",
-        en: "I manage HubSpot ecosystems and orchestrate workflows using n8n. Always exploring new tech — from building React interfaces to configuring personal infrastructure and VPNs. I take business chaos and transform it into streamlined digital tools."
+        ru: "Оптимизирую бизнес-процессы и внедряю автоматизацию на базе HubSpot и n8n. Разрабатываю веб-интерфейсы на React и настраиваю надежную IT-инфраструктуру. Превращаю сложные задачи в эффективные цифровые решения.",
+        en: "I optimize business processes and implement automation using HubSpot and n8n. I develop React web interfaces and configure robust IT infrastructure, transforming complex challenges into effective digital solutions."
     },
 
     /** Текст и состояние виджета статуса */

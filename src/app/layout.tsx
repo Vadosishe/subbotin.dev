@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -7,6 +8,7 @@ import { LanguageProvider } from "@/components/LanguageProvider";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { CommandPalette } from "@/components/ui/CommandPalette";
 
+const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
   title: "Влад Субботин | Tech Explorer & Creator",
@@ -20,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className="antialiased selection:bg-indigo-500/30">
+      <body className={`${inter.className} antialiased selection:bg-indigo-500/30`}>
         <ThemeProvider>
           <LanguageProvider>
             <ScrollProgress />

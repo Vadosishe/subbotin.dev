@@ -16,7 +16,7 @@ export function ServicesCard() {
         <div className="flex flex-col h-full p-6">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <span className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-sm" style={{ color: 'var(--accent)' }}>🛠</span>
-                {t({ ru: "Мои поделки", en: "My Projects" })}
+                {t({ ru: "Проекты", en: "Projects" })}
             </h2>
 
             <div className="flex flex-col gap-4 flex-grow">
