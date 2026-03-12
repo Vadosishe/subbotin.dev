@@ -4,4 +4,6 @@ date: "2026-03-12"
 tags: ["n8n"]
 ---
 
+
 Тестовый пост
+![unnamed.jpg](/uploads/1773315036040-z6mn99.jpg)
