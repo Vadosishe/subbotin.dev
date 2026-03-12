@@ -1,8 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Save, Loader2, Link as LinkIcon, Calendar, Hash, CheckCircle2, ImagePlus, FileText, Plus, Trash2 } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Save, Loader2, Link as LinkIcon, Calendar, Hash, CheckCircle2, ImagePlus, FileText, Plus, Trash2, Bold, Italic, Code, Quote, List, ListOrdered } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+// TipTap
+import { useEditor, EditorContent, BubbleMenu, Editor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Link from '@tiptap/extension-link';
+import Image from '@tiptap/extension-image';
+import Placeholder from '@tiptap/extension-placeholder';
+import { Markdown } from 'tiptap-markdown';
+import { KeyboardShortcuts } from './tiptap-extensions';
 
 interface PostItem {
     title: string;
@@ -30,7 +39,42 @@ export function EditorClient() {
 
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    // TipTap Editor setup
+    const editor = useEditor({
+        extensions: [
+            StarterKit,
+            Markdown.configure({
+                html: false,
+                transformPastedText: true,
+                transformCopiedText: true,
+            }),
+            Link.configure({
+                openOnClick: false,
+            }),
+            Image,
+            Placeholder.configure({
+                placeholder: 'Напишите текст поста здесь (команды: /, поддержка Markdown)...',
+            }),
+            KeyboardShortcuts.configure({
+                onSave: () => {
+                    handlePublishRef.current?.();
+                }
+            })
+        ],
+        content: content,
+        onUpdate: ({ editor }) => {
+            setContent(editor.storage.markdown.getMarkdown());
+        },
+        editorProps: {
+            attributes: {
+                class: 'prose prose-invert prose-indigo max-w-none focus:outline-none min-h-[300px] h-full',
+            },
+        },
+    });
+
+    // To use handlePublish inside TipTap extension
+    const handlePublishRef = useRef<() => void>(null);
 
     useEffect(() => {
         fetch("/api/admin/posts")
@@ -70,6 +114,10 @@ export function EditorClient() {
         setContent(p.content);
         setError("");
         setSuccess(false);
+
+        if (editor) {
+            editor.commands.setContent(p.content);
+        }
     };
 
     const handleNewPost = () => {
@@ -80,9 +128,13 @@ export function EditorClient() {
         setContent("");
         setError("");
         setSuccess(false);
+
+        if (editor) {
+            editor.commands.setContent("");
+        }
     };
 
-    const handlePublish = async () => {
+    const handlePublish = useCallback(async () => {
         if (!title || !slug || !content) {
             setError("Поля Заголовок, Slug и Текст обязательны");
             return;
@@ -121,7 +173,14 @@ export function EditorClient() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [title, slug, date, tags, content, router]);
+
+    // Bind ref
+    useEffect(() => {
+        // @ts-ignore
+        handlePublishRef.current = handlePublish;
+    }, [handlePublish]);
+
 
     const handleDelete = async () => {
         if (!slug) return;
@@ -157,7 +216,7 @@ export function EditorClient() {
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file) return;
+        if (!file || !editor) return;
 
         setUploadingImage(true);
         setError("");
@@ -175,25 +234,11 @@ export function EditorClient() {
             if (!res.ok) throw new Error(data.error || "Ошибка загрузки картинки");
 
             const imageUrl = data.url;
-            const imageMarkdown = `\n![${file.name}](${imageUrl})\n`;
 
-            // Insert at cursor position if possible
-            if (textareaRef.current) {
-                const start = textareaRef.current.selectionStart;
-                const end = textareaRef.current.selectionEnd;
-                const currentContent = textareaRef.current.value;
-                const newContent = currentContent.substring(0, start) + imageMarkdown + currentContent.substring(end);
-                setContent(newContent);
-                setTimeout(() => {
-                    if (textareaRef.current) {
-                        textareaRef.current.selectionStart = start + imageMarkdown.length;
-                        textareaRef.current.selectionEnd = start + imageMarkdown.length;
-                        textareaRef.current.focus();
-                    }
-                }, 0);
-            } else {
-                setContent(prev => prev + imageMarkdown);
-            }
+            // Insert using tiptap
+            editor.chain().focus().setImage({ src: imageUrl, alt: file.name }).run();
+            // This will trigger onUpdate, which updates the markdown `content` state
+
         } catch (err: any) {
             setError(err.message || "Failed to upload image");
         } finally {
@@ -201,6 +246,23 @@ export function EditorClient() {
             if (fileInputRef.current) fileInputRef.current.value = "";
         }
     };
+
+    const setLink = useCallback(() => {
+        if (!editor) return;
+        const previousUrl = editor.getAttributes('link').href
+        const url = window.prompt('URL', previousUrl)
+
+        if (url === null) {
+            return
+        }
+
+        if (url === '') {
+            editor.chain().focus().extendMarkRange('link').unsetLink().run()
+            return
+        }
+
+        editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    }, [editor]);
 
     return (
         <div className="w-full bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex h-[85vh]">
@@ -238,9 +300,11 @@ export function EditorClient() {
             {/* Main Editor */}
             <div className="flex-1 flex flex-col min-w-0 p-6 lg:p-8 overflow-y-auto custom-scrollbar bg-zinc-900">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-                    <div className="min-w-0">
-                        <h1 className="text-2xl font-bold text-white mb-2 truncate">Написать пост</h1>
-                        <p className="text-sm text-zinc-400 font-mono text-xs truncate">{slug || "новый-пост"}.md</p>
+                    <div className="min-w-0 flex items-center gap-4">
+                        <div className="flex-1 min-w-0">
+                            <h1 className="text-2xl font-bold text-white mb-2 truncate">Написать пост</h1>
+                            <p className="text-sm text-zinc-400 font-mono text-xs truncate">{slug || "новый-пост"}.md</p>
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
@@ -279,13 +343,13 @@ export function EditorClient() {
                             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> :
                                 success ? <CheckCircle2 className="w-5 h-5 text-green-300" /> :
                                     <Save className="w-5 h-5" />}
-                            <span className="hidden sm:inline">{loading ? "Сохранение..." : success ? "Успех!" : "Сохранить"}</span>
+                            <span className="hidden sm:inline">{loading ? "..." : success ? "Успех!" : "Сохранить"}</span>
                         </button>
                     </div>
                 </div>
 
                 {error && (
-                    <div className="mb-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    <div className="mb-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex-shrink-0">
                         {error}
                     </div>
                 )}
@@ -334,14 +398,72 @@ export function EditorClient() {
                     </div>
                 </div>
 
-                <div className="flex-1 flex flex-col relative min-h-[300px]">
-                    <textarea
-                        ref={textareaRef}
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="Напишите текст поста здесь (поддерживается Markdown)..."
-                        className="flex-1 w-full h-full bg-zinc-950/50 rounded-xl border border-white/5 p-6 text-zinc-300 font-mono text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500/50 resize-none leading-relaxed custom-scrollbar"
-                    />
+                {/* TipTap Editor */}
+                <div className="flex-1 flex flex-col relative w-full bg-zinc-950/50 rounded-xl border border-white/5 px-6 py-4 custom-scrollbar overflow-y-auto">
+                    {editor && (
+                        <BubbleMenu
+                            editor={editor}
+                            tippyOptions={{ duration: 100 }}
+                            className="flex items-center bg-zinc-800 border border-white/10 shadow-2xl rounded-lg overflow-hidden"
+                        >
+                            <button
+                                onClick={() => editor.chain().focus().toggleBold().run()}
+                                className={`p-2 hover:bg-white/10 transition-colors ${editor.isActive('bold') ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                <Bold className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={() => editor.chain().focus().toggleItalic().run()}
+                                className={`p-2 hover:bg-white/10 transition-colors ${editor.isActive('italic') ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                <Italic className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={() => editor.chain().focus().toggleCode().run()}
+                                className={`p-2 hover:bg-white/10 transition-colors ${editor.isActive('code') ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                <Code className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={setLink}
+                                className={`p-2 hover:bg-white/10 transition-colors ${editor.isActive('link') ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                <LinkIcon className="w-4 h-4" />
+                            </button>
+                            <div className="w-px h-6 bg-white/10 mx-1" />
+                            <button
+                                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                                className={`px-2 py-1 text-sm font-bold hover:bg-white/10 transition-colors ${editor.isActive('heading', { level: 2 }) ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                H2
+                            </button>
+                            <button
+                                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                                className={`px-2 py-1 text-sm font-bold hover:bg-white/10 transition-colors ${editor.isActive('heading', { level: 3 }) ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                H3
+                            </button>
+                            <div className="w-px h-6 bg-white/10 mx-1" />
+                            <button
+                                onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                                className={`p-2 hover:bg-white/10 transition-colors ${editor.isActive('blockquote') ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                <Quote className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                                className={`p-2 hover:bg-white/10 transition-colors ${editor.isActive('bulletList') ? 'text-indigo-400 bg-white/5' : 'text-zinc-300'}`}
+                            >
+                                <List className="w-4 h-4" />
+                            </button>
+                        </BubbleMenu>
+                    )}
+                    <EditorContent editor={editor} className="flex-1 min-h-[300px]" />
+                </div>
+
+                <div className="mt-4 text-xs font-mono text-zinc-500 opacity-50 flex justify-between items-center shrink-0">
+                    <p>TipTap Markdown Editor / Поддерживает Ctrl+S</p>
+                    <p>{content.length} characters</p>
                 </div>
             </div>
 

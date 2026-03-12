@@ -90,3 +90,40 @@ body {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
+
+/* TipTap Editor Styles */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #52525b;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+.ProseMirror {
+    outline: none !important;
+}
+.ProseMirror > * + * {
+    margin-top: 0.75em;
+}
+.ProseMirror a {
+    color: #818cf8;
+    cursor: pointer;
+}
+.ProseMirror pre {
+    background: #18181b;
+    color: #e4e4e7;
+    font-family: inherit;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+.ProseMirror img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+.ProseMirror blockquote {
+    padding-left: 1rem;
+    border-left: 3px solid #6366f1;
+    color: #a1a1aa;
+    font-style: italic;
+}
