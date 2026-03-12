@@ -283,7 +283,7 @@ export function EditorClient() {
         ],
         content: "",
         onUpdate: ({ editor }) => {
-            setContent(editor.storage.markdown.getMarkdown());
+            setContent((editor.storage as any).markdown.getMarkdown());
         },
         editorProps: {
             attributes: {
