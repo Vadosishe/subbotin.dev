@@ -78,8 +78,12 @@ export const siteConfig = {
         },
         github: {
             title: { ru: "Активность GitHub", en: "GitHub Activity" },
+            activity: { ru: "GitHub Активность", en: "GitHub Activity" },
+            latestEvents: { ru: "Последние действия", en: "Recent Activity" },
             view: { ru: "Открыть Git", en: "View Git" },
-            live: { ru: "Live", en: "Live" }
+            live: { ru: "Live", en: "Live" },
+            noActivity: { ru: "Нет недавней активности", en: "No recent activity" },
+            ago: { ru: "назад", en: "ago" },
         },
         common: {
             copied: { ru: "Скопировано!", en: "Copied!" },
