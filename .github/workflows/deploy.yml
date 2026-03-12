@@ -23,4 +23,4 @@ jobs:
             cd ~/infra/site-next
             git pull origin main
             docker compose build nextjs-site
-            docker compose up -d nextjs-site
+            docker compose up -d --force-recreate nextjs-site

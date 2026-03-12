@@ -43,7 +43,7 @@ export async function POST(request: Request) {
                 'User-Agent': 'subbotin-dev-cms'
             },
             body: JSON.stringify({
-                message: `📸 chore: upload image ${fileName}`,
+                message: `📸 chore: upload image ${fileName} [skip ci]`,
                 content: base64Content,
                 branch: branch
             })
