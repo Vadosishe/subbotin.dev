@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Save, Loader2, Link as LinkIcon, Calendar, Hash, CheckCircle2, ImagePlus, FileText, Plus } from "lucide-react";
+import { Save, Loader2, Link as LinkIcon, Calendar, Hash, CheckCircle2, ImagePlus, FileText, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface PostItem {
@@ -25,6 +25,7 @@ export function EditorClient() {
     const [loading, setLoading] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const [error, setError] = useState("");
 
     const router = useRouter();
@@ -122,6 +123,38 @@ export function EditorClient() {
         }
     };
 
+    const handleDelete = async () => {
+        if (!slug) return;
+        if (!confirm(`Вы уверены, что хотите удалить пост "${title || slug}"?`)) return;
+
+        setError("");
+        setDeleting(true);
+
+        try {
+            const res = await fetch(`/api/admin/post?slug=${slug}`, {
+                method: "DELETE",
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.error || "Ошибка удаления");
+            }
+
+            // Refresh post list
+            fetch("/api/admin/posts").then(r => r.json()).then(d => {
+                if (d.posts) setPosts(d.posts);
+            });
+
+            handleNewPost();
+            router.refresh();
+
+        } catch (err: any) {
+            setError(err.message || "Ошибка удаления");
+        } finally {
+            setDeleting(false);
+        }
+    };
+
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -211,6 +244,17 @@ export function EditorClient() {
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
+                        {posts.some(p => p.slug === slug) && (
+                            <button
+                                onClick={handleDelete}
+                                disabled={deleting || loading}
+                                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-medium transition-colors disabled:opacity-50"
+                                title="Удалить пост"
+                            >
+                                {deleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                                <span className="hidden lg:inline">Удалить</span>
+                            </button>
+                        )}
                         <input
                             type="file"
                             accept="image/*"
