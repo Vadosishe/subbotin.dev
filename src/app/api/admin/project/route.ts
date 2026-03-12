@@ -37,43 +37,47 @@ ${content}`;
         const branch = process.env.GITHUB_BRANCH || "main";
 
         if (githubToken) {
-            const filePath = `content/projects/${slug}.md`;
-            const githubApiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+            const { commitMultipleFiles } = await import("@/lib/github");
 
-            let sha = undefined;
-            const getRes = await fetch(githubApiUrl, {
-                headers: {
-                    'Authorization': `Bearer ${githubToken}`,
-                    'User-Agent': 'subbotin-dev-cms'
-                }
+            const filesToCommit = [];
+            
+            // Add RU file
+            filesToCommit.push({
+                path: `content/projects/${slug}.md`,
+                content: frontmatter
             });
 
-            if (getRes.ok) {
-                const fileData = await getRes.json();
-                sha = fileData.sha;
+            const { titleEn, contentEn, descriptionEn } = body;
+            if (titleEn && contentEn) {
+                const frontmatterEn = `---
+title: "${titleEn.replace(/"/g, '\\"')}"
+date: "${date || new Date().toISOString().split('T')[0]}"
+description: "${(descriptionEn || "").replace(/"/g, '\\"')}"
+stack: ${stackString}
+status: "${status || "active"}"
+link: "${link || ""}"
+github: "${github || ""}"
+lang: en
+---
+
+${contentEn}`;
+                filesToCommit.push({
+                    path: `content/projects/${slug}.en.md`,
+                    content: frontmatterEn
+                });
             }
 
-            const encodedContent = Buffer.from(frontmatter).toString('base64');
-            const payload: any = {
-                message: sha ? `📝 feat(projects): updated project "${title}"` : `📝 feat(projects): added project "${title}"`,
-                content: encodedContent,
-                branch: branch
-            };
-            if (sha) payload.sha = sha;
-
-            const githubRes = await fetch(githubApiUrl, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${githubToken}`,
-                    'Content-Type': 'application/json',
-                    'User-Agent': 'subbotin-dev-cms'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!githubRes.ok) {
-                const errorData = await githubRes.json();
-                return NextResponse.json({ error: errorData.message || "Failed to save to GitHub" }, { status: 500 });
+            try {
+                await commitMultipleFiles({
+                    files: filesToCommit,
+                    commitMessage: `📝 feat(projects): updated project "${title}"${titleEn ? ' (+ en)' : ''}`,
+                    githubToken,
+                    repoOwner,
+                    repoName,
+                    branch
+                });
+            } catch (err: any) {
+                return NextResponse.json({ error: "Failed to save to GitHub", details: err.message }, { status: 500 });
             }
         }
 
@@ -106,40 +110,22 @@ export async function DELETE(request: Request) {
             return NextResponse.json({ error: "GITHUB_TOKEN not configured" }, { status: 500 });
         }
 
-        const filePath = `content/projects/${slug}.md`;
-        const githubApiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+        const { commitMultipleFiles } = await import("@/lib/github");
 
-        // Get SHA
-        const getRes = await fetch(githubApiUrl, {
-            headers: {
-                'Authorization': `Bearer ${githubToken}`,
-                'User-Agent': 'subbotin-dev-cms'
-            }
-        });
-
-        if (!getRes.ok) {
-            return NextResponse.json({ error: "Project not found or GitHub API error" }, { status: 404 });
-        }
-
-        const fileData = await getRes.json();
-
-        // Delete
-        const deleteRes = await fetch(githubApiUrl, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${githubToken}`,
-                'Content-Type': 'application/json',
-                'User-Agent': 'subbotin-dev-cms'
-            },
-            body: JSON.stringify({
-                message: `🗑️ chore(projects): deleted project "${slug}"`,
-                sha: fileData.sha,
-                branch: branch
-            })
-        });
-
-        if (!deleteRes.ok) {
-            return NextResponse.json({ error: "Failed to delete from GitHub" }, { status: 500 });
+        try {
+            await commitMultipleFiles({
+                files: [
+                    { path: `content/projects/${slug}.md`, content: null },
+                    { path: `content/projects/${slug}.en.md`, content: null }
+                ],
+                commitMessage: `🗑️ chore(projects): deleted project "${slug}"`,
+                githubToken,
+                repoOwner,
+                repoName,
+                branch
+            });
+        } catch (err: any) {
+            return NextResponse.json({ error: "Failed to delete from GitHub", details: err.message }, { status: 500 });
         }
 
         return NextResponse.json({ success: true });

@@ -318,9 +318,22 @@ export function EditorClient() {
 
         try {
             const endpoint = mode === "posts" ? "/api/admin/post" : "/api/admin/project";
-            const body = mode === "posts"
+            
+            // Base payload for RU version
+            const body: any = mode === "posts"
                 ? { title, slug, date, tags, content }
                 : { title, slug, date, content, description, stack, link: projectLink, github: projectGithub, status: projectStatus };
+
+            // 2. Если включен автоперевод, переводим и прикрепляем EN версию к основному запросу
+            if (autoTranslate) {
+                const enTitle = await translateText(title, 'title');
+                const enDesc = (mode === "projects" && description) ? await translateText(description, 'title') : "";
+                const enContent = await translateText(content, 'content');
+                
+                body.titleEn = enTitle;
+                body.descriptionEn = enDesc;
+                body.contentEn = enContent;
+            }
 
             const res = await fetch(endpoint, {
                 method: "POST",
@@ -330,32 +343,6 @@ export function EditorClient() {
 
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || "Ошибка сохранения");
-
-            // 2. Если включен автоперевод, переводим и сохраняем EN версию
-            if (autoTranslate) {
-                const enTitle = await translateText(title, 'title');
-                const enDesc = (mode === "projects" && description) ? await translateText(description, 'title') : "";
-                const enContent = await translateText(content, 'content');
-
-                const payloadEN = {
-                    ...body,
-                    title: enTitle,
-                    description: enDesc,
-                    content: enContent,
-                    slug: `${slug}.en`, // Добавляем суффикс к слагу
-                    lang: 'en'
-                };
-
-                const resEN = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payloadEN),
-                });
-                if (!resEN.ok) {
-                    console.error("Failed to save translated version");
-                    setError((prev) => prev ? `${prev}\nОшибка перевода.` : "Русская версия ок, ошибка перевода.");
-                }
-            }
 
             setSuccess(true);
             refreshList();
