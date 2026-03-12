@@ -313,6 +313,17 @@ export function EditorClient() {
 
     useEffect(() => { refreshList(); }, [mode]);
 
+    // ── Helper: set markdown content into editor as rich text ──
+    function setEditorMarkdown(md: string) {
+        if (!editor) return;
+        try {
+            const parsed = (editor.storage as any).markdown.parse(md);
+            editor.commands.setContent(parsed);
+        } catch {
+            editor.commands.setContent(md);
+        }
+    }
+
     // ── Reset form ──
     function resetForm() {
         setTitle(""); setSlug(""); setContent(""); setDate(new Date().toISOString().split("T")[0]);
@@ -326,7 +337,7 @@ export function EditorClient() {
     function loadPost(p: PostItem) {
         setTitle(p.title); setSlug(p.slug); setDate(p.date || ""); setTags(p.tags || "");
         setContent(p.content); setError(""); setSuccess(false);
-        editor?.commands.setContent(p.content);
+        setEditorMarkdown(p.content);
     }
 
     // ── Load project ──
@@ -336,7 +347,7 @@ export function EditorClient() {
         setProjectLink(p.link || ""); setProjectGithub(p.github || "");
         setProjectStatus(p.status || "active"); setContent(p.content);
         setError(""); setSuccess(false);
-        editor?.commands.setContent(p.content);
+        setEditorMarkdown(p.content);
     }
 
     // ── Delete ──
