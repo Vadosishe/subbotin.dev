@@ -3,6 +3,7 @@ import { FadeIn } from "@/components/ui/FadeIn";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import parse, { domToReact, HTMLReactParserOptions, Element } from "html-react-parser";
 import { CopyBlock } from "@/components/ui/CopyBlock";
 
@@ -15,6 +16,11 @@ interface Params {
 export async function generateMetadata(props: Params): Promise<Metadata> {
     const params = await props.params;
     const postData = await getPostData(params.slug);
+    
+    if (postData.draft) {
+        notFound();
+    }
+    
     return {
         title: `${postData.title} | Влад Субботин`,
         description: postData.excerpt,
@@ -61,6 +67,11 @@ export default async function Post(props: Params) {
     const params = await props.params;
     const id = params.slug;
     const postData = await getPostData(id);
+
+    if (postData.draft) {
+        notFound();
+    }
+
     const isEn = postData.lang === 'en';
     const backText = isEn ? "Back to articles" : "Назад к статьям";
 

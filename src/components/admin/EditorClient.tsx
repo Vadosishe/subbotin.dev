@@ -24,7 +24,7 @@ import { KeyboardShortcuts } from "./tiptap-extensions";
 type Mode = "posts" | "projects";
 
 interface PostItem {
-    title: string; slug: string; date: string; tags: string; content: string;
+    title: string; slug: string; date: string; tags: string; content: string; draft?: boolean;
 }
 
 interface ProjectItem {
@@ -66,20 +66,47 @@ function BubBtn({
 // ─── Sidebar Item ─────────────────────────────────────────────────────────────
 
 function SidebarItem({
-    title, subtitle, active, onClick,
-}: { title: string; subtitle?: string; active: boolean; onClick: () => void }) {
+    title,
+    subtitle,
+    active,
+    onClick,
+    selected,
+    onSelect
+}: {
+    title: string;
+    subtitle?: string;
+    active?: boolean;
+    onClick: () => void;
+    selected?: boolean;
+    onSelect?: (e: React.MouseEvent) => void;
+}) {
     return (
-        <button
+        <div
+            className={`
+                group relative flex w-full items-center gap-3 rounded-xl p-3 text-left transition-all cursor-pointer
+                ${active
+                    ? "bg-indigo-500/10 text-indigo-300 before:absolute before:inset-y-2 before:left-0 before:w-1 before:rounded-r-md before:bg-indigo-500"
+                    : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
+                }
+            `}
             onClick={onClick}
-            className={`w-full text-left p-3 rounded-xl transition-colors text-sm flex items-start gap-3
-        ${active ? "bg-indigo-500/10 text-indigo-300" : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"}`}
         >
-            <FileText className="w-4 h-4 mt-0.5 shrink-0 opacity-60" />
-            <div className="truncate min-w-0 flex-1">
-                <div className="truncate font-medium">{title}</div>
-                {subtitle && <div className="text-xs opacity-50 truncate mt-0.5">{subtitle}</div>}
+            <div className="flex items-center justify-center shrink-0 pr-1" onClick={(e) => { e.stopPropagation(); onSelect && onSelect(e); }}>
+                <input 
+                    type="checkbox" 
+                    checked={selected}
+                    onChange={() => {}} // Handle click on wrapper
+                    className="w-4 h-4 rounded border-zinc-600 bg-zinc-800 text-indigo-500 focus:ring-0 cursor-pointer" 
+                />
             </div>
-        </button>
+            <div className="flex-1 min-w-0 pr-2">
+                <div className="truncate font-medium text-sm leading-tight text-white mb-0.5">{title}</div>
+                <div className="truncate text-[11px] opacity-60 font-mono flex items-center gap-1.5">
+                    {active && <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />}
+                    {subtitle}
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -274,6 +301,7 @@ export function EditorClient() {
     const [posts, setPosts] = useState<PostItem[]>([]);
     const [projects, setProjects] = useState<ProjectItem[]>([]);
     const [loadingList, setLoadingList] = useState(true);
+    const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
     // ── UI state ──
     const [loading, setLoading] = useState(false);
@@ -429,6 +457,79 @@ export function EditorClient() {
         }
     }
 
+    // ── Bulk Actions ──
+    function toggleSelection(itemSlug: string) {
+        setSelectedItems(prev =>
+            prev.includes(itemSlug) ? prev.filter(s => s !== itemSlug) : [...prev, itemSlug]
+        );
+    }
+
+    async function handleBulkDelete() {
+        if (selectedItems.length === 0) return;
+        if (!confirm(`Удалить выбранные элементы (${selectedItems.length})?`)) return;
+        setDeleting(true); setError("");
+        try {
+            for (const itemSlug of selectedItems) {
+                const endpoint = mode === "posts" ? `/api/admin/post?slug=${itemSlug}` : `/api/admin/project?slug=${itemSlug}`;
+                const res = await fetch(endpoint, { method: "DELETE" });
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(`Ошибка удаления ${itemSlug}: ${data.error || "Неизвестная ошибка"}`);
+                }
+            }
+            setSelectedItems([]);
+            refreshList();
+            if (selectedItems.includes(slug)) resetForm();
+            router.refresh();
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setDeleting(false);
+        }
+    }
+
+    async function handleBulkHide() {
+        if (selectedItems.length === 0) return;
+        if (!confirm(`Скрыть выбранные элементы (${selectedItems.length})?`)) return;
+        setDeleting(true); setError("");
+        try {
+            const res = await fetch("/api/admin/bulk-status", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ slugs: selectedItems, mode, action: "hide" }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Ошибка скрытия");
+
+            setSelectedItems([]); refreshList(); router.refresh();
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setDeleting(false);
+        }
+    }
+
+    async function handleBulkPublish() {
+        if (selectedItems.length === 0) return;
+        if (!confirm(`Опубликовать выбранные элементы (${selectedItems.length})?`)) return;
+        setDeleting(true); setError("");
+        try {
+            const res = await fetch("/api/admin/bulk-status", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ slugs: selectedItems, mode, action: "publish" }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Ошибка публикации");
+
+            setSelectedItems([]); refreshList(); router.refresh();
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setDeleting(false);
+        }
+    }
+
     // ── Image upload ──
     async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
@@ -503,6 +604,38 @@ export function EditorClient() {
                     </button>
                 </div>
 
+                {/* Bulk Actions Toolbar */}
+                {selectedItems.length > 0 && (
+                    <div className="px-4 py-2 border-b border-white/5 flex items-center gap-2 bg-zinc-900/50 justify-between">
+                        <span className="text-xs text-zinc-400 font-medium px-1.5">
+                            Выбрано: {selectedItems.length}
+                        </span>
+                        <div className="flex gap-1.5">
+                            <button
+                                onClick={handleBulkPublish}
+                                disabled={deleting}
+                                className="px-2.5 py-1.5 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-400 text-[11px] font-semibold transition-colors disabled:opacity-40"
+                            >
+                                Показать
+                            </button>
+                            <button
+                                onClick={handleBulkHide}
+                                disabled={deleting}
+                                className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-300 text-[11px] font-semibold transition-colors disabled:opacity-40"
+                            >
+                                Скрыть
+                            </button>
+                            <button
+                                onClick={handleBulkDelete}
+                                disabled={deleting}
+                                className="px-2.5 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-[11px] font-semibold transition-colors disabled:opacity-40"
+                            >
+                                Удалить
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 {/* Item list */}
                 <div className="flex-1 overflow-y-auto p-2 space-y-0.5 custom-scrollbar">
                     {loadingList ? (
@@ -514,9 +647,11 @@ export function EditorClient() {
                             <SidebarItem
                                 key={p.slug}
                                 title={p.title}
-                                subtitle={p.date}
+                                subtitle={p.draft ? `[Скрыт] ${p.date}` : p.date}
                                 active={slug === p.slug && title === p.title}
                                 onClick={() => loadPost(p)}
+                                selected={selectedItems.includes(p.slug)}
+                                onSelect={() => toggleSelection(p.slug)}
                             />
                         ))
                     ) : (
@@ -527,6 +662,8 @@ export function EditorClient() {
                                 subtitle={p.status}
                                 active={slug === p.slug && title === p.title}
                                 onClick={() => loadProject(p)}
+                                selected={selectedItems.includes(p.slug)}
+                                onSelect={() => toggleSelection(p.slug)}
                             />
                         ))
                     )}

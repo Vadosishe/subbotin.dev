@@ -30,6 +30,7 @@ export async function GET() {
                 title: data.title || "Untitled",
                 date: data.date || "",
                 tags: data.tags?.join(", ") || "",
+                draft: !!data.draft,
                 content: content
             };
         });

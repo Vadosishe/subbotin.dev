@@ -13,6 +13,7 @@ export interface BlogPostData {
     title: string;
     date: string;
     excerpt: string;
+    draft?: boolean;
 }
 
 export interface BlogPost extends BlogPostData {
@@ -33,6 +34,11 @@ export function getSortedPostsData(): BlogPostData[] {
 
             const matterResult = matter(fileContents);
 
+            // Filter out drafts
+            if (matterResult.data.draft === true) {
+                return null;
+            }
+
             const parts = id.split('.');
             const fileLang = parts.length > 1 ? parts.pop()! : 'ru';
             const slug = parts.join('.') || id;
@@ -46,7 +52,8 @@ export function getSortedPostsData(): BlogPostData[] {
                 date: matterResult.data.date || '',
                 excerpt: matterResult.data.excerpt || '',
             };
-        });
+        })
+        .filter(Boolean) as BlogPostData[];
 
     return allPostsData.sort((a, b) => {
         if (a.date < b.date) {
@@ -83,5 +90,6 @@ export async function getPostData(id: string): Promise<BlogPost> {
         title: matterResult.data.title || slug,
         date: matterResult.data.date || '',
         excerpt: matterResult.data.excerpt || '',
+        draft: !!matterResult.data.draft,
     };
 }
