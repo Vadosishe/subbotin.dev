@@ -118,8 +118,8 @@ function FloatingBubbleMenu({
 
             const menuH = menuRef.current?.offsetHeight || 40;
             setPos({
-                top: rect.top + window.scrollY - menuH - 8,
-                left: rect.left + window.scrollX + rect.width / 2,
+                top: rect.top - menuH - 8,
+                left: rect.left + rect.width / 2,
             });
             setVisible(true);
         }
