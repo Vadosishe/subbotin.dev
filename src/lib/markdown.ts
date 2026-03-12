@@ -28,10 +28,6 @@ export function getSortedPostsData(): BlogPostData[] {
         .filter((fileName) => fileName.endsWith('.md'))
         .map((fileName) => {
             const id = fileName.replace(/\.md$/, '');
-            const parts = id.split('.');
-            const lang = parts.length > 1 ? parts.pop()! : 'ru';
-            const slug = parts.join('.') || id;
-
             const fullPath = path.join(contentDirectory, fileName);
             const fileContents = fs.readFileSync(fullPath, 'utf8');
 
@@ -39,9 +35,9 @@ export function getSortedPostsData(): BlogPostData[] {
 
             return {
                 id,
-                slug,
-                lang,
-                title: matterResult.data.title || slug,
+                slug: id,
+                lang: matterResult.data.lang || 'ru',
+                title: matterResult.data.title || id,
                 date: matterResult.data.date || '',
                 excerpt: matterResult.data.excerpt || '',
             };
@@ -63,9 +59,8 @@ export async function getPostData(id: string): Promise<BlogPost> {
 
     const matterResult = matter(fileContents);
 
-    const parts = id.split('.');
-    const lang = parts.length > 1 ? parts.pop()! : 'ru';
-    const slug = parts.join('.') || id;
+    const lang = matterResult.data.lang || 'ru';
+    const slug = id;
 
     const processedContent = await remark()
         .use(html)

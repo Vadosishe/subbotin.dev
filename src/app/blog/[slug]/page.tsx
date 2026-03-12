@@ -3,6 +3,8 @@ import { FadeIn } from "@/components/ui/FadeIn";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
+import parse, { domToReact, HTMLReactParserOptions, Element } from "html-react-parser";
+import { CopyBlock } from "@/components/ui/CopyBlock";
 
 interface Params {
     params: Promise<{
@@ -27,11 +29,39 @@ export async function generateStaticParams() {
     }));
 }
 
+const parseOptions: HTMLReactParserOptions = {
+    replace: (domNode) => {
+        if (domNode instanceof Element && domNode.name === "pre") {
+            // "pre" обычно содержит "code" внутри
+            const codeNode = domNode.children.find(
+                (c): c is Element => c instanceof Element && c.name === "code"
+            );
+            
+            // Пытаемся добыть raw текст для копирования
+            let rawCode = "";
+            if (codeNode) {
+                const textNode = codeNode.children.find(c => c.type === "text" || (c as any).name === "text");
+                if (textNode && "data" in textNode) {
+                    rawCode = (textNode as any).data || "";
+                }
+            }
+
+            return (
+                <CopyBlock code={rawCode}>
+                    <pre {...domNode.attribs}>
+                        {domToReact(domNode.children as any, parseOptions)}
+                    </pre>
+                </CopyBlock>
+            );
+        }
+    },
+};
+
 export default async function Post(props: Params) {
     const params = await props.params;
     const id = params.slug;
     const postData = await getPostData(id);
-    const isEn = id.endsWith('.en');
+    const isEn = postData.lang === 'en';
     const backText = isEn ? "Back to articles" : "Назад к статьям";
 
     return (
@@ -51,9 +81,10 @@ export default async function Post(props: Params) {
 
             <FadeIn delay={0.2} className="mt-10">
                 <div
-                    className="prose prose-invert prose-lg max-w-none prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-headings:text-gray-100 prose-img:rounded-xl prose-pre:bg-[#0a0a0a] prose-pre:border prose-pre:border-white/10"
-                    dangerouslySetInnerHTML={{ __html: postData.contentHtml }}
-                />
+                    className="prose prose-invert prose-lg max-w-none prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-headings:text-gray-100 prose-img:rounded-xl prose-pre:bg-[#0a0a0a] prose-pre:border prose-pre:border-white/10 prose-pre:p-4 prose-pre:relative"
+                >
+                    {parse(postData.contentHtml, parseOptions)}
+                </div>
             </FadeIn>
         </article>
     );
