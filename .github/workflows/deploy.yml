@@ -3,7 +3,7 @@ name: Deploy Next.js to Server
 on:
   push:
     branches:
-      - prod
+      - main
 
 jobs:
   deploy:
@@ -21,6 +21,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/infra/site-next
-            git pull origin prod
+            git pull origin main
             docker compose build nextjs-site
             docker compose up -d nextjs-site
