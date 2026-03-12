@@ -362,7 +362,8 @@ export function EditorClient() {
 
     // ── Load post ──
     function loadPost(p: PostItem) {
-        setTitle(p.title); setSlug(p.slug); setDate(p.date || ""); setTags(p.tags || "");
+        setTitle(p.title); setSlug(p.slug); setDate(p.date || "");
+        setTags(Array.isArray(p.tags) ? p.tags.join(", ") : p.tags || "");
         setContent(p.content); setError(""); setSuccess(false);
         setEditorMarkdown(p.content);
     }
@@ -370,7 +371,8 @@ export function EditorClient() {
     // ── Load project ──
     function loadProject(p: ProjectItem) {
         setTitle(p.title); setSlug(p.slug); setDate(p.date || "");
-        setDescription(p.description || ""); setStack(p.stack || "");
+        setDescription(p.description || "");
+        setStack(Array.isArray(p.stack) ? p.stack.join(", ") : p.stack || "");
         setProjectLink(p.link || ""); setProjectGithub(p.github || "");
         setProjectStatus(p.status || "active"); setContent(p.content);
         setError(""); setSuccess(false);
