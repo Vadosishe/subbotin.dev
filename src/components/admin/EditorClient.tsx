@@ -250,6 +250,25 @@ export function EditorClient() {
     const [projectLink, setProjectLink] = useState("");
     const [projectGithub, setProjectGithub] = useState("");
     const [projectStatus, setProjectStatus] = useState<"active" | "beta" | "archived">("active");
+    const [autoTranslate, setAutoTranslate] = useState(false);
+
+    // Вспомогательная функция для перевода через API
+    const translateText = async (text: string, type: 'title' | 'content') => {
+        try {
+            const res = await fetch('/api/admin/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, type })
+            });
+            const data = await res.json();
+            if (data.success) return data.translated;
+            console.error("Translate err:", data.error);
+            return text; // fallback
+        } catch (e) {
+            console.error("Translate fetch err:", e);
+            return text;
+        }
+    };
 
     // ── Lists ──
     const [posts, setPosts] = useState<PostItem[]>([]);
@@ -312,6 +331,32 @@ export function EditorClient() {
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || "Ошибка сохранения");
 
+            // 2. Если включен автоперевод, переводим и сохраняем EN версию
+            if (autoTranslate) {
+                const enTitle = await translateText(title, 'title');
+                const enDesc = (mode === "projects" && description) ? await translateText(description, 'title') : "";
+                const enContent = await translateText(content, 'content');
+
+                const payloadEN = {
+                    ...body,
+                    title: enTitle,
+                    description: enDesc,
+                    content: enContent,
+                    slug: `${slug}.en`, // Добавляем суффикс к слагу
+                    lang: 'en'
+                };
+
+                const resEN = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payloadEN),
+                });
+                if (!resEN.ok) {
+                    console.error("Failed to save translated version");
+                    setError((prev) => prev ? `${prev}\nОшибка перевода.` : "Русская версия ок, ошибка перевода.");
+                }
+            }
+
             setSuccess(true);
             refreshList();
             setTimeout(() => { setSuccess(false); router.refresh(); }, 3000);
@@ -320,7 +365,7 @@ export function EditorClient() {
         } finally {
             setLoading(false);
         }
-    }, [title, slug, date, tags, content, description, stack, projectLink, projectGithub, projectStatus, mode, router]);
+    }, [title, slug, date, tags, content, description, stack, projectLink, projectGithub, projectStatus, mode, router, autoTranslate]);
 
     useEffect(() => { handleSaveRef.current = handleSave; }, [handleSave]);
 
@@ -511,7 +556,16 @@ export function EditorClient() {
                             {mode === "posts" ? "Пост" : "Проект"} / {slug || "новый"}
                         </p>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-3 shrink-0">
+                        <label className="flex items-center gap-2 text-sm text-gray-300 font-medium cursor-pointer">
+                            <input 
+                                type="checkbox" 
+                                checked={autoTranslate} 
+                                onChange={(e) => setAutoTranslate(e.target.checked)}
+                                className="rounded border-white/20 bg-black/50 text-indigo-500 focus:ring-indigo-500"
+                            />
+                            Translate (EN)
+                        </label>
                         {isExisting && (
                             <button
                                 onClick={handleDelete}

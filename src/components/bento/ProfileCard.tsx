@@ -28,7 +28,7 @@ export function ProfileCard() {
 
                     <div className="relative z-10 flex-grow flex flex-col justify-center">
                         <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 italic">
-                            {siteConfig.name}
+                            {t(siteConfig.name)}
                         </h1>
                         <p className="text-xl font-medium mb-4" style={{ color: 'var(--accent)' }}>
                             {t(siteConfig.role)}
@@ -80,7 +80,7 @@ export function ProfileCard() {
                     {siteConfig.avatar ? (
                         <img
                             src={siteConfig.avatar}
-                            alt={siteConfig.name}
+                            alt={t(siteConfig.name)}
                             className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                         />
                     ) : (

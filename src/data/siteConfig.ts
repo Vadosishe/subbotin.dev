@@ -2,7 +2,10 @@
  * Конфигурация сайта — редактируй здесь текст статуса, email и другие настройки.
  */
 export const siteConfig = {
-    name: "Влад Субботин",
+    name: {
+        ru: "Влад Субботин",
+        en: "Vlad Subbotin"
+    },
     role: {
         ru: "HubSpot Admin & Automation Lead",
         en: "HubSpot Admin & Automation Lead"

@@ -21,7 +21,8 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # Provide build-time environment variables
-RUN --mount=type=cache,target=/app/.next/cache npm run build
+ENV NEXT_MEMORY_LIMIT=2048
+RUN --mount=type=cache,target=/app/.next/cache NODE_OPTIONS="--max-old-space-size=2048" npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
