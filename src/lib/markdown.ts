@@ -33,11 +33,16 @@ export function getSortedPostsData(): BlogPostData[] {
 
             const matterResult = matter(fileContents);
 
+            const parts = id.split('.');
+            const fileLang = parts.length > 1 ? parts.pop()! : 'ru';
+            const slug = parts.join('.') || id;
+            const lang = matterResult.data.lang || fileLang;
+
             return {
                 id,
-                slug: id,
-                lang: matterResult.data.lang || 'ru',
-                title: matterResult.data.title || id,
+                slug,
+                lang,
+                title: matterResult.data.title || slug,
                 date: matterResult.data.date || '',
                 excerpt: matterResult.data.excerpt || '',
             };
@@ -59,8 +64,10 @@ export async function getPostData(id: string): Promise<BlogPost> {
 
     const matterResult = matter(fileContents);
 
-    const lang = matterResult.data.lang || 'ru';
-    const slug = id;
+    const parts = id.split('.');
+    const fileLang = parts.length > 1 ? parts.pop()! : 'ru';
+    const slug = parts.join('.') || id;
+    const lang = matterResult.data.lang || fileLang;
 
     const processedContent = await remark()
         .use(html)
