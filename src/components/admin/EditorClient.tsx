@@ -5,7 +5,8 @@ import { createPortal } from "react-dom";
 import {
     Save, Loader2, Link as LinkIcon, Calendar, Hash,
     CheckCircle2, ImagePlus, FileText, Plus, Trash2,
-    Bold, Italic, Strikethrough, Heading1, Heading2, ExternalLink,
+    Bold, Italic, Strikethrough, Heading1, Heading2, Heading3,
+    ExternalLink, Code, Code2, Quote, List, ListOrdered,
     BookOpen, FolderOpen, Globe, Github as GithubIcon, Tag, Layers,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -84,6 +85,10 @@ function SidebarItem({
 
 // ─── Floating Bubble Menu ──────────────────────────────────────────────────────
 
+function Sep() {
+    return <div className="w-px h-5 bg-white/10 mx-0.5" />;
+}
+
 function FloatingBubbleMenu({
     editor,
     showLinkInput, setShowLinkInput,
@@ -106,10 +111,8 @@ function FloatingBubbleMenu({
     useEffect(() => {
         function update() {
             const { from, to } = editor.state.selection;
-            const hasSelection = from !== to;
-            if (!hasSelection) { setVisible(false); return; }
+            if (from === to) { setVisible(false); return; }
 
-            // Get bounding rect from native selection
             const sel = window.getSelection();
             if (!sel || sel.rangeCount === 0) { setVisible(false); return; }
             const range = sel.getRangeAt(0);
@@ -126,10 +129,7 @@ function FloatingBubbleMenu({
 
         editor.on("selectionUpdate", update);
         editor.on("blur", () => { if (!showLinkInput) setVisible(false); });
-
-        return () => {
-            editor.off("selectionUpdate", update);
-        };
+        return () => { editor.off("selectionUpdate", update); };
     }, [editor, showLinkInput]);
 
     if (!visible && !showLinkInput) return null;
@@ -137,9 +137,12 @@ function FloatingBubbleMenu({
     const menu = (
         <div
             ref={menuRef}
-            style={pos ? { position: "fixed", top: pos.top, left: pos.left, transform: "translateX(-50%)", zIndex: 9999 } : { position: "fixed", visibility: "hidden" }}
-            className="flex items-center gap-0.5 px-1.5 py-1 rounded-lg border border-white/10 bg-zinc-900/95 backdrop-blur-md shadow-xl shadow-black/50 transition-opacity duration-150"
+            style={pos
+                ? { position: "fixed", top: pos.top, left: pos.left, transform: "translateX(-50%)", zIndex: 9999 }
+                : { position: "fixed", visibility: "hidden" }}
+            className="flex items-center gap-0.5 px-1.5 py-1 rounded-xl border border-white/10 bg-zinc-900/97 backdrop-blur-md shadow-xl shadow-black/50"
         >
+            {/* ─ Text styles ─ */}
             <BubBtn active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()} title="Bold (Ctrl+B)">
                 <Bold className="w-3.5 h-3.5" />
             </BubBtn>
@@ -149,18 +152,42 @@ function FloatingBubbleMenu({
             <BubBtn active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()} title="Strikethrough">
                 <Strikethrough className="w-3.5 h-3.5" />
             </BubBtn>
+            <BubBtn active={editor.isActive("code")} onClick={() => editor.chain().focus().toggleCode().run()} title="Inline code">
+                <Code className="w-3.5 h-3.5" />
+            </BubBtn>
 
-            <div className="w-px h-5 bg-white/10 mx-0.5" />
+            <Sep />
 
+            {/* ─ Headings ─ */}
             <BubBtn active={editor.isActive("heading", { level: 1 })} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} title="H1">
                 <Heading1 className="w-3.5 h-3.5" />
             </BubBtn>
             <BubBtn active={editor.isActive("heading", { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} title="H2">
                 <Heading2 className="w-3.5 h-3.5" />
             </BubBtn>
+            <BubBtn active={editor.isActive("heading", { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} title="H3">
+                <Heading3 className="w-3.5 h-3.5" />
+            </BubBtn>
 
-            <div className="w-px h-5 bg-white/10 mx-0.5" />
+            <Sep />
 
+            {/* ─ Blocks ─ */}
+            <BubBtn active={editor.isActive("blockquote")} onClick={() => editor.chain().focus().toggleBlockquote().run()} title="Blockquote ( > )">
+                <Quote className="w-3.5 h-3.5" />
+            </BubBtn>
+            <BubBtn active={editor.isActive("codeBlock")} onClick={() => editor.chain().focus().toggleCodeBlock().run()} title="Code block ( ``` )">
+                <Code2 className="w-3.5 h-3.5" />
+            </BubBtn>
+            <BubBtn active={editor.isActive("bulletList")} onClick={() => editor.chain().focus().toggleBulletList().run()} title="Bullet list ( - )">
+                <List className="w-3.5 h-3.5" />
+            </BubBtn>
+            <BubBtn active={editor.isActive("orderedList")} onClick={() => editor.chain().focus().toggleOrderedList().run()} title="Numbered list ( 1. )">
+                <ListOrdered className="w-3.5 h-3.5" />
+            </BubBtn>
+
+            <Sep />
+
+            {/* ─ Link ─ */}
             {showLinkInput ? (
                 <div className="flex items-center gap-1">
                     <input
