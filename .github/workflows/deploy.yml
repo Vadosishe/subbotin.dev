@@ -23,6 +23,6 @@ jobs:
             cd ~/infra/site-next
             git pull origin main
             docker compose build nextjs-site
-            docker compose down || true
-            docker ps -aq --filter name=nextjs-site | xargs -r docker rm -f || true
+            docker compose stop nextjs-site || true
+            docker compose rm -f nextjs-site || true
             docker compose up -d --force-recreate nextjs-site
