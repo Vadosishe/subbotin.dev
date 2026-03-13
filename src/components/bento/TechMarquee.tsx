@@ -40,8 +40,8 @@ export function TechMarquee() {
                             transition={{ duration: 0.2 }}
                             className="text-center w-full"
                         >
-                            <h3 className="text-xs font-bold text-indigo-400 mb-1">{hoveredSkill.name}</h3>
-                            <p className="text-[10px] md:text-xs opacity-70 leading-tight max-w-[90%] mx-auto">
+                            <h3 className="text-sm font-bold text-indigo-400 mb-1">{hoveredSkill.name}</h3>
+                            <p className="text-xs md:text-sm opacity-80 leading-snug max-w-[95%] mx-auto">
                                 {t(hoveredSkill.description)}
                             </p>
                         </motion.div>
@@ -54,10 +54,10 @@ export function TechMarquee() {
                             transition={{ duration: 0.2 }}
                             className="flex flex-col items-center justify-center h-full"
                         >
-                            <h3 className="text-[10px] font-semibold uppercase tracking-widest opacity-30 text-center mb-1">
+                            <h3 className="text-sm font-medium opacity-40 text-center mb-1">
                                 {t(siteConfig.ui.skills.title)}
                             </h3>
-                            <p className="text-[9px] opacity-20">{t(siteConfig.ui.skills.hoverPrompt)}</p>
+                            <p className="text-xs opacity-30">{t(siteConfig.ui.skills.hoverPrompt)}</p>
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -78,8 +78,8 @@ export function TechMarquee() {
                                 onMouseEnter={() => setHoveredSkill(skill)}
                                 onMouseLeave={() => setHoveredSkill(null)}
                             >
-                                <Icon size={20} className={isHovered ? "text-indigo-400" : ""} />
-                                <span className="text-base md:text-lg font-bold tracking-tight">
+                                <Icon size={24} className={isHovered ? "text-indigo-400" : ""} />
+                                <span className="text-lg md:text-xl font-bold tracking-tight">
                                     {skill.name}
                                 </span>
                             </div>
