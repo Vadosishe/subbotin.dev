@@ -35,7 +35,7 @@ function timeAgo(dateStr: string, lang: "ru" | "en"): string {
 }
 
 function EventIcon({ iconType }: { iconType: string }) {
-    const cls = "w-3.5 h-3.5 shrink-0";
+    const cls = "w-4 h-4 shrink-0";
     switch (iconType) {
         case "push": return <GitCommitHorizontal className={cls} />;
         case "create": return <GitBranch className={cls} />;
@@ -87,16 +87,16 @@ export function GitHubWidget() {
                 <div className="p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-indigo-500/30 transition-colors">
                     <Github className="w-5 h-5" />
                 </div>
-                <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-[10px] font-bold text-green-500 uppercase tracking-tighter">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <span className="text-xs md:text-sm font-bold text-green-500 uppercase tracking-tighter">
                         {t(siteConfig.ui.github.live)}
                     </span>
                 </div>
             </div>
 
             {/* Section label */}
-            <p className="relative z-10 text-[11px] font-bold uppercase tracking-widest text-zinc-500 mb-3">
+            <p className="relative z-10 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-500 mb-3">
                 {t(siteConfig.ui.github.latestEvents)}
             </p>
 
@@ -110,7 +110,7 @@ export function GitHubWidget() {
                         <SkeletonRow />
                     </>
                 ) : events.length === 0 ? (
-                    <p className="text-xs text-zinc-600 italic py-2">{t(siteConfig.ui.github.noActivity)}</p>
+                    <p className="text-sm text-zinc-600 italic py-2">{t(siteConfig.ui.github.noActivity)}</p>
                 ) : (
                     events.map((event, i) => (
                         <motion.a
@@ -130,16 +130,16 @@ export function GitHubWidget() {
 
                             {/* Text */}
                             <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium truncate leading-tight">
+                                <p className="text-sm font-medium truncate leading-tight">
                                     {event.description}
                                 </p>
-                                <p className="text-[10px] text-zinc-600 truncate mt-0.5">
+                                <p className="text-xs text-zinc-500 truncate mt-0.5">
                                     {event.repo}
                                 </p>
                             </div>
 
                             {/* Time */}
-                            <span className="text-[10px] text-zinc-600 shrink-0">
+                            <span className="text-xs text-zinc-500 shrink-0">
                                 {timeAgo(event.date, lang)}
                             </span>
                         </motion.a>
@@ -152,10 +152,10 @@ export function GitHubWidget() {
                 <a
                     href={siteConfig.socials.github}
                     target="_blank"
-                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors group/link"
+                    className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors group/link"
                 >
                     {t(siteConfig.ui.github.view)}
-                    <ExternalLink className="w-3 h-3 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+                    <ExternalLink className="w-4 h-4 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
                 </a>
             </div>
         </div>

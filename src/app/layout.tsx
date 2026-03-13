@@ -22,12 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased selection:bg-indigo-500/30`}>
+      <body className={`${inter.className} antialiased text-lg selection:bg-indigo-500/30`}>
         <ThemeProvider>
           <LanguageProvider>
             <ScrollProgress />
             <CommandPalette />
-            <div className="max-w-5xl mx-auto flex flex-col min-h-screen px-4 md:px-6">
+            <div className="max-w-7xl mx-auto flex flex-col min-h-screen px-4 md:px-8">
               <Header />
               <main className="flex-1">
                 {children}

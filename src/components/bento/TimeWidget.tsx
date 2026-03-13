@@ -27,9 +27,9 @@ export function TimeWidget() {
     if (!mounted) return null;
 
     return (
-        <div className="flex items-center gap-2 opacity-40 hover:opacity-100 transition-opacity cursor-default">
-            <Clock className="w-3.5 h-3.5" />
-            <span className="text-xs font-mono font-medium tracking-tight whitespace-nowrap">{time} MSK</span>
+        <div className="flex items-center gap-3 opacity-40 hover:opacity-100 transition-opacity cursor-default">
+            <Clock className="w-5 h-5" />
+            <span className="text-base font-mono font-medium tracking-tight whitespace-nowrap">{time} MSK</span>
         </div>
     );
 }

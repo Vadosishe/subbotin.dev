@@ -22,11 +22,11 @@ export function BlogWidget({ allPosts }: BlogWidgetProps) {
     return (
         <div className="h-full flex flex-col justify-between p-6 md:p-8">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold flex items-center gap-2">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
                     <span className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm">✍️</span>
                     {t(siteConfig.ui.blog.latest)}
                 </h2>
-                <Link href="/blog" className="text-sm flex items-center gap-1 transition-opacity opacity-60 hover:opacity-100">
+                <Link href="/blog" className="text-base flex items-center gap-1 transition-opacity opacity-60 hover:opacity-100">
                     {t(siteConfig.ui.blog.all)} <ArrowRight className="w-4 h-4" />
                 </Link>
             </div>
@@ -40,10 +40,10 @@ export function BlogWidget({ allPosts }: BlogWidgetProps) {
                         style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)' }}
                     >
                         <div>
-                            <h3 className="font-semibold group-hover:text-emerald-400 mb-1 transition-colors">{post.title}</h3>
-                            <p className="text-sm line-clamp-2" style={{ color: 'var(--muted)' }}>{post.excerpt}</p>
+                            <h3 className="text-lg font-bold group-hover:text-emerald-400 mb-1 transition-colors">{post.title}</h3>
+                            <p className="text-base line-clamp-2" style={{ color: 'var(--muted)' }}>{post.excerpt}</p>
                         </div>
-                        <span className="text-xs mt-4 block" style={{ color: 'var(--muted)' }}>{post.date}</span>
+                        <span className="text-sm mt-4 block" style={{ color: 'var(--muted)' }}>{post.date}</span>
                     </Link>
                 ))}
                 {latestPosts.length === 0 && (

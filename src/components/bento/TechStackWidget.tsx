@@ -14,7 +14,7 @@ const stack = [
 export function TechStackWidget() {
     return (
         <div className="bento-card col-span-1 rounded-3xl p-6 flex flex-col h-full min-h-[140px]">
-            <h3 className="text-sm font-semibold uppercase tracking-wider mb-4" style={{ color: 'var(--muted)' }}>
+            <h3 className="text-base font-semibold uppercase tracking-wider mb-4" style={{ color: 'var(--muted)' }}>
                 Tech Stack
             </h3>
             <div className="grid grid-cols-3 gap-2 flex-grow items-center">
@@ -27,10 +27,10 @@ export function TechStackWidget() {
                         className="flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200 hover:scale-110 cursor-default"
                         title={tech.name}
                     >
-                        <span className="text-lg" style={{ color: tech.color }}>
+                        <span className="text-2xl" style={{ color: tech.color }}>
                             {tech.icon}
                         </span>
-                        <span className="text-[10px] font-medium" style={{ color: 'var(--muted)' }}>
+                        <span className="text-xs md:text-sm font-medium mt-1" style={{ color: 'var(--muted)' }}>
                             {tech.name}
                         </span>
                     </motion.div>

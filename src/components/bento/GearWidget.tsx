@@ -9,8 +9,8 @@ export function GearWidget() {
 
     return (
         <div className="flex flex-col h-full p-6 bg-gradient-to-br from-indigo-500/5 to-transparent">
-            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 rounded bg-orange-500/20 text-orange-400 flex items-center justify-center text-xs">🛠️</span>
+            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span className="w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center text-sm">🛠️</span>
                 {t({ ru: "Железо", en: "Gear" })}
             </h2>
 
@@ -29,8 +29,8 @@ export function GearWidget() {
                                 <IconComponent size={18} strokeWidth={1.5} />
                             </div>
                             <div className="flex flex-col overflow-hidden">
-                                <h3 className="text-xs font-semibold truncate">{t(item.name)}</h3>
-                                <p className="text-[9px] opacity-40 truncate">{t(item.description)}</p>
+                                <h3 className="text-sm font-bold truncate">{t(item.name)}</h3>
+                                <p className="text-xs opacity-60 truncate mt-0.5">{t(item.description)}</p>
                             </div>
                         </div>
                     );

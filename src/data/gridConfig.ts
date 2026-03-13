@@ -8,7 +8,9 @@ export type BlockType =
     | 'GitHubWidget'
     | 'GearWidget'
     | 'StatusWidget'
-    | 'TechMarquee';
+    | 'TechMarquee'
+    | 'MetricsWidget'
+    | 'WorkflowWidget';
 
 export interface GridBlock {
     id: string;
@@ -41,37 +43,51 @@ export const gridConfig: GridBlock[] = [
         delay: 0.2
     },
     {
+        id: 'metrics',
+        type: 'MetricsWidget',
+        colSpan: 1,
+        color: 'rgba(255, 255, 255, 0.1)', // Subtle white for metrics
+        delay: 0.3
+    },
+    {
+        id: 'workflow',
+        type: 'WorkflowWidget',
+        colSpan: 2,
+        color: 'rgba(99, 102, 241, 0.15)', // Subtle indigo theme for workflows
+        delay: 0.4
+    },
+    {
         id: 'blog',
         type: 'BlogWidget',
         colSpan: 3,
         color: 'rgba(16, 185, 129, 0.12)',
-        delay: 0.3
+        delay: 0.5
     },
     {
         id: 'github',
         type: 'GitHubWidget',
         colSpan: 1,
         color: 'rgba(79, 70, 229, 0.15)',
-        delay: 0.4
+        delay: 0.6
     },
     {
         id: 'gear',
         type: 'GearWidget',
         colSpan: 1,
         color: 'rgba(249, 115, 22, 0.1)',
-        delay: 0.5
+        delay: 0.7
     },
     {
         id: 'status',
         type: 'StatusWidget',
         colSpan: 1,
         color: 'rgba(34, 197, 94, 0.15)',
-        delay: 0.6
+        delay: 0.8
     },
     {
         id: 'marquee',
         type: 'TechMarquee',
         colSpan: 3,
-        delay: 0.7
+        delay: 0.9
     }
 ];

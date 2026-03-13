@@ -8,6 +8,8 @@ import { GitHubWidget } from "./GitHubWidget";
 import { GearWidget } from "./GearWidget";
 import { StatusWidget } from "./StatusWidget";
 import { TechMarquee } from "./TechMarquee";
+import { MetricsWidget } from "./MetricsWidget";
+import { WorkflowWidget } from "./WorkflowWidget";
 import { BlockType } from "@/data/gridConfig";
 
 /**
@@ -21,6 +23,8 @@ export const COMPONENT_REGISTRY: Record<BlockType, React.ComponentType<any>> = {
     GearWidget: GearWidget,
     StatusWidget: StatusWidget,
     TechMarquee: TechMarquee,
+    MetricsWidget: MetricsWidget,
+    WorkflowWidget: WorkflowWidget,
 };
 
 interface RenderBlockProps {

@@ -14,7 +14,7 @@ export function ServicesCard() {
 
     return (
         <div className="flex flex-col h-full p-6">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                 <span className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-sm" style={{ color: 'var(--accent)' }}>🛠</span>
                 {t({ ru: "Проекты", en: "Projects" })}
             </h2>
@@ -29,16 +29,16 @@ export function ServicesCard() {
                     >
                         <div className="flex justify-between items-center w-full">
                             <div className="flex items-center gap-2">
-                                <h3 className="font-semibold group-hover:text-indigo-400 transition-colors">
+                                <h3 className="text-lg font-bold group-hover:text-indigo-400 transition-colors">
                                     {project.title}
                                 </h3>
-                                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusColors[project.status]}`}>
+                                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${statusColors[project.status]}`}>
                                     {project.status === "active" ? "●" : project.status === "beta" ? "β" : "◌"}
                                 </span>
                             </div>
-                            <ArrowRight className="w-4 h-4 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                            <ArrowRight className="w-5 h-5 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                         </div>
-                        <p className="text-sm line-clamp-2 mt-1" style={{ color: 'var(--muted)' }}>
+                        <p className="text-base line-clamp-2 mt-1" style={{ color: 'var(--muted)' }}>
                             {t(project.description)}
                         </p>
                     </Link>
