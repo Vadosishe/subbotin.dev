@@ -32,13 +32,13 @@ export function LoginForm() {
 
     return (
         <div className="flex min-h-[50vh] items-center justify-center">
-            <div className="w-full max-w-sm p-8 rounded-2xl bg-zinc-900 border border-white/10 shadow-2xl">
+            <div className="w-full max-w-sm p-8 rounded-2xl border border-current/10 shadow-2xl" style={{ backgroundColor: 'var(--card-bg)' }}>
                 <div className="flex flex-col items-center mb-8">
                     <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
                         <Lock className="w-6 h-6 text-indigo-400" />
                     </div>
-                    <h1 className="text-xl font-bold text-white">Вход в Админку</h1>
-                    <p className="text-sm text-zinc-400 mt-2 text-center">
+                    <h1 className="text-xl font-bold text-current opacity-90">Вход в Админку</h1>
+                    <p className="text-sm opacity-60 mt-2 text-center">
                         Введите пароль для доступа к редактору блога
                     </p>
                 </div>
@@ -50,7 +50,7 @@ export function LoginForm() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Пароль"
-                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                            className="w-full px-4 py-3 rounded-xl bg-current/5 border border-current/10 text-current placeholder:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                             required
                         />
                     </div>

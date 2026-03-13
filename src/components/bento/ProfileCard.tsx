@@ -27,7 +27,7 @@ export function ProfileCard() {
                         style={{ background: 'var(--card-glow)' }} />
 
                     <div className="relative z-10 flex-grow flex flex-col justify-center">
-                        <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-2 italic">
+                        <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-2">
                             {t(siteConfig.name)}
                         </h1>
                         <p className="text-2xl font-medium mb-4" style={{ color: 'var(--accent)' }}>

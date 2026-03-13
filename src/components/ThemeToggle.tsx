@@ -9,7 +9,7 @@ export function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="p-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/5 transition-all duration-300 cursor-pointer group"
+            className="p-3 rounded-full bg-current/5 hover:bg-current/10 border border-current/10 transition-all duration-300 cursor-pointer group"
             aria-label="Переключить тему"
             title={theme === "dark" ? "Светлая тема" : "Тёмная тема"}
         >

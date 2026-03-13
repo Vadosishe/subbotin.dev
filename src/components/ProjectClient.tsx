@@ -69,7 +69,7 @@ export default function ProjectClient({ project }: { project: Project }) {
 
             <FadeIn delay={0.2} className="mt-10">
                 <div
-                    className="prose prose-invert prose-lg max-w-none prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-headings:tracking-tight prose-pre:bg-[#0a0a0a] prose-pre:border prose-pre:border-white/10"
+                    className="prose prose-lg max-w-none prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-headings:tracking-tight prose-pre:border prose-pre:border-current/10"
                     dangerouslySetInnerHTML={{ __html: simpleMarkdown(t(project.longDescription)) }}
                 />
             </FadeIn>

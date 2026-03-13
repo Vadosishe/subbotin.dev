@@ -25,16 +25,14 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
         const saved = localStorage.getItem("lang") as Language | null;
         if (saved && (saved === "ru" || saved === "en")) {
             setLangState(saved);
         } else {
-            // Если среди языков браузера НЕТ ни одного ru/ru-* — показываем EN
-            const langs = navigator.languages?.length ? navigator.languages : [navigator.language];
-            const hasRussian = langs.some(l => l.toLowerCase().startsWith("ru"));
-            if (!hasRussian) setLangState("en");
+            const browserLang = navigator.language.startsWith("ru") ? "ru" : "en";
+            setLangState(browserLang);
         }
+        setMounted(true);
     }, []);
 
     useEffect(() => {

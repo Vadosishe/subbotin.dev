@@ -23,12 +23,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
         const saved = localStorage.getItem("theme") as Theme | null;
         if (saved) {
             setTheme(saved);
-            document.documentElement.setAttribute("data-theme", saved);
+        } else {
+            setTheme("dark");
         }
+        setMounted(true);
     }, []);
 
     const toggleTheme = () => {

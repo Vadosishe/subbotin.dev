@@ -58,7 +58,7 @@ export function CommandPalette() {
         { id: "home", label: t(siteConfig.ui.nav.home), icon: Home, action: () => router.push("/") },
         { id: "blog", label: t(siteConfig.ui.nav.blog), icon: Book, action: () => router.push("/blog") },
         { id: "github", label: "GitHub", icon: Github, action: () => window.open(siteConfig.socials.github, "_blank") },
-        { id: "email", label: t(siteConfig.ui.common.email), icon: Mail, action: () => window.location.href = `mailto:${siteConfig.email}` },
+        { id: "email", label: t(siteConfig.ui.common.email), icon: Mail, action: () => window.location.assign(`mailto:${siteConfig.email}`) },
         {
             id: "theme",
             label: theme === "dark"
@@ -100,25 +100,25 @@ export function CommandPalette() {
                             className="fixed inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
                         />
 
-                        {/* Palette */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: -20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                            className="relative w-full max-w-xl bg-zinc-900/90 border border-white/10 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto backdrop-blur-xl"
+                            className="relative w-full max-w-xl border border-current/10 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto backdrop-blur-xl"
+                            style={{ backgroundColor: 'var(--card-bg)' }}
                         >
-                            <div className="flex items-center p-4 border-b border-white/5">
+                            <div className="flex items-center p-4 border-b border-current/5">
                                 <Search className="w-5 h-5 text-zinc-500 mr-3" />
                                 <input
                                     autoFocus
                                     placeholder={t({ ru: "Поиск и команды...", en: "Search and commands..." })}
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
-                                    className="w-full bg-transparent text-white placeholder-zinc-500 outline-none text-lg"
+                                    className="w-full bg-transparent text-current placeholder:opacity-50 outline-none text-lg"
                                 />
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="p-1 hover:bg-white/5 rounded-lg transition-colors"
+                                    className="p-1 hover:bg-current/5 rounded-lg transition-colors"
                                 >
                                     <X className="w-5 h-5 text-zinc-500" />
                                 </button>
@@ -127,7 +127,7 @@ export function CommandPalette() {
                             <div className="max-h-[60vh] overflow-y-auto p-2">
                                 {items.length > 0 ? (
                                     <div className="space-y-1">
-                                        <p className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+                                <p className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest opacity-50">
                                             {t({ ru: "Навигация", en: "Navigation" })}
                                         </p>
                                         {items.map((item) => (
@@ -137,9 +137,9 @@ export function CommandPalette() {
                                                     item.action();
                                                     setIsOpen(false);
                                                 }}
-                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 text-zinc-300 hover:text-white transition-all group text-left"
+                                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-current/5 opacity-80 hover:opacity-100 transition-all group text-left"
                                             >
-                                                <div className="p-2 rounded-lg bg-zinc-800 group-hover:bg-indigo-500/20 group-hover:text-indigo-400 transition-colors">
+                                                <div className="p-2 rounded-lg bg-current/5 group-hover:bg-indigo-500/20 group-hover:text-indigo-400 transition-colors">
                                                     <item.icon className="w-4 h-4" />
                                                 </div>
                                                 <span className="flex-grow font-medium">{item.label}</span>
@@ -148,8 +148,8 @@ export function CommandPalette() {
                                     </div>
                                 ) : (
                                     <div className="p-12 text-center">
-                                        <Search className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
-                                        <p className="text-zinc-500">{t({ ru: "Ничего не найдено", en: "Nothing found" })}</p>
+                                        <Search className="w-12 h-12 opacity-30 mx-auto mb-4" />
+                                        <p className="opacity-50">{t({ ru: "Ничего не найдено", en: "Nothing found" })}</p>
                                     </div>
                                 )}
                             </div>

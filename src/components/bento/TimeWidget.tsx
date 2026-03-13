@@ -8,18 +8,18 @@ export function TimeWidget() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
         const update = () => {
             const now = new Date();
             setTime(
                 now.toLocaleTimeString("ru-RU", {
+                    timeZone: "Asia/Tbilisi",
                     hour: "2-digit",
                     minute: "2-digit",
-                    timeZone: "Europe/Moscow",
                 })
             );
         };
         update();
+        setMounted(true);
         const interval = setInterval(update, 1000);
         return () => clearInterval(interval);
     }, []);

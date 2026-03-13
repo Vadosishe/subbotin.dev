@@ -51,12 +51,12 @@ function EventIcon({ iconType }: { iconType: string }) {
 function SkeletonRow() {
     return (
         <div className="flex items-center gap-3 py-2.5 animate-pulse">
-            <div className="w-3.5 h-3.5 rounded-full bg-white/10 shrink-0" />
+            <div className="w-3.5 h-3.5 rounded-full bg-current/10 shrink-0" />
             <div className="flex-1 min-w-0">
-                <div className="h-2.5 bg-white/10 rounded w-3/4 mb-1.5" />
-                <div className="h-2 bg-white/5 rounded w-1/3" />
+                <div className="h-2.5 bg-current/10 rounded w-3/4 mb-1.5" />
+                <div className="h-2 bg-current/5 rounded w-1/3" />
             </div>
-            <div className="h-2 bg-white/5 rounded w-10 shrink-0" />
+            <div className="h-2 bg-current/5 rounded w-10 shrink-0" />
         </div>
     );
 }
@@ -84,7 +84,7 @@ export function GitHubWidget() {
 
             {/* Header */}
             <div className="relative z-10 flex justify-between items-start mb-4">
-                <div className="p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-indigo-500/30 transition-colors">
+                <div className="p-2 rounded-xl bg-current/5 border border-current/10 group-hover:border-indigo-500/30 transition-colors">
                     <Github className="w-5 h-5" />
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
@@ -121,7 +121,7 @@ export function GitHubWidget() {
                             initial={{ opacity: 0, x: -6 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: i * 0.06, duration: 0.3 }}
-                            className="flex items-center gap-3 py-2 px-2 rounded-xl hover:bg-white/5 transition-colors group/item cursor-pointer"
+                            className="flex items-center gap-3 py-2 px-2 rounded-xl hover:bg-current/5 transition-colors group/item cursor-pointer"
                         >
                             {/* Icon */}
                             <span className="text-indigo-400/70 group-hover/item:text-indigo-400 transition-colors">
@@ -152,7 +152,7 @@ export function GitHubWidget() {
                 <a
                     href={siteConfig.socials.github}
                     target="_blank"
-                    className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors group/link"
+                    className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest text-zinc-500 hover:text-current transition-colors group/link"
                 >
                     {t(siteConfig.ui.github.view)}
                     <ExternalLink className="w-4 h-4 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />

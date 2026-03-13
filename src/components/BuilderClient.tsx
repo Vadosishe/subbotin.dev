@@ -85,8 +85,8 @@ export default function BuilderClient({ allPosts }: { allPosts: BlogPostData[] }
         return (
             <div className="flex flex-col items-center justify-center min-h-[400px] text-center p-8 bg-red-900/10 border border-red-500/20 rounded-3xl">
                 <p className="text-red-400 font-bold mb-4">Ошибка загрузки конструктора</p>
-                <code className="text-xs opacity-70 block mb-6 bg-black/20 p-4 rounded-xl border border-white/5">{loadingError}</code>
-                <button onClick={() => window.location.reload()} className="px-4 py-2 bg-white/10 rounded-xl hover:bg-white/20 transition-colors">
+                <code className="text-xs opacity-70 block mb-6 bg-current/10 p-4 rounded-xl border border-current/5">{loadingError}</code>
+                <button onClick={() => window.location.reload()} className="px-4 py-2 bg-current/10 rounded-xl hover:bg-current/20 transition-colors">
                     Попробовать снова
                 </button>
             </div>
@@ -108,18 +108,18 @@ export default function BuilderClient({ allPosts }: { allPosts: BlogPostData[] }
 
     return (
         <div className="min-h-screen pb-20">
-            <div className="sticky top-4 z-[100] mb-8 p-4 bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-2xl">
+            <div className="sticky top-4 z-[100] mb-8 p-4 backdrop-blur-xl border border-current/10 rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-2xl" style={{ backgroundColor: 'var(--card-bg)' }}>
                 <div>
-                    <h1 className="text-lg font-bold text-white">Bento Builder</h1>
-                    <p className="text-xs text-white/50">Перетаскивайте и меняйте размер блоков</p>
+                    <h1 className="text-lg font-bold text-current opacity-90">Bento Builder</h1>
+                    <p className="text-xs opacity-50">Перетаскивайте и меняйте размер блоков</p>
                 </div>
                 <div className="flex gap-2">
                     <button
                         onClick={() => window.location.reload()}
-                        className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
+                        className="p-2.5 rounded-xl bg-current/5 hover:bg-current/10 transition-colors"
                         title="Сбросить"
                     >
-                        <RotateCcw className="w-5 h-5 text-white/70" />
+                        <RotateCcw className="w-5 h-5 opacity-70" />
                     </button>
                     <button
                         onClick={handleExport}
@@ -133,7 +133,7 @@ export default function BuilderClient({ allPosts }: { allPosts: BlogPostData[] }
 
             <div
                 ref={containerRef}
-                className="builder-container relative bg-white/[0.02] border border-dashed border-white/10 rounded-3xl min-h-[1000px] overflow-visible"
+                className="builder-container relative bg-current/[0.02] border border-dashed border-current/10 rounded-3xl min-h-[1000px] overflow-visible"
             >
                 <ResponsiveGrid
                     className="layout"
@@ -150,10 +150,11 @@ export default function BuilderClient({ allPosts }: { allPosts: BlogPostData[] }
                     {gridConfig.map((block) => (
                         <div key={block.id} className="group relative">
                             <SpotlightCard
-                                className="h-full w-full rounded-2xl overflow-hidden border border-white/10 bg-zinc-900 shadow-xl"
+                                className="h-full w-full rounded-2xl overflow-hidden border border-current/10 shadow-xl"
                                 color={block.color || "rgba(255, 255, 255, 0.05)"}
+                                style={{ backgroundColor: 'var(--card-bg)' }}
                             >
-                                <div className="drag-handle absolute top-2 right-2 z-50 p-2 rounded-lg bg-black/60 opacity-0 group-hover:opacity-100 cursor-move transition-all hover:bg-indigo-600 border border-white/10">
+                                <div className="drag-handle absolute top-2 right-2 z-50 p-2 rounded-lg bg-black/60 opacity-0 group-hover:opacity-100 cursor-move transition-all hover:bg-indigo-600 border border-current/10">
                                     <div className="grid grid-cols-2 gap-0.5">
                                         {[...Array(6)].map((_, i) => (
                                             <div key={i} className="w-1 h-1 rounded-full bg-white" />
@@ -217,8 +218,8 @@ export default function BuilderClient({ allPosts }: { allPosts: BlogPostData[] }
                     bottom: 5px;
                     width: 8px;
                     height: 8px;
-                    border-right: 2px solid white;
-                    border-bottom: 2px solid white;
+                    border-right: 2px solid currentColor;
+                    border-bottom: 2px solid currentColor;
                     opacity: 0.3;
                 }
                 .group:hover .react-resizable-handle::after {
