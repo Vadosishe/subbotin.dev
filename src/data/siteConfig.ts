@@ -14,10 +14,9 @@ export const siteConfig = {
     email: "vladsubbotin35@gmail.com",
     avatar: "/vlad.JPG",
     bio: {
-        ru: "Оптимизирую бизнес-процессы и внедряю автоматизацию на базе HubSpot и n8n. Разрабатываю веб-интерфейсы на React и настраиваю надежную IT-инфраструктуру. Превращаю сложные задачи в эффективные цифровые решения.",
-        en: "I optimize business processes and implement automation using HubSpot and n8n. I develop React web interfaces and configure robust IT infrastructure, transforming complex challenges into effective digital solutions."
+        ru: "Архитектор IT-инфраструктуры и автоматизации. Проектирую отказоустойчивые системы на базе Docker, развертываю сервисы и создаю сложные сценарии в n8n. Бесшовно интегрирую HubSpot и другие CRM-системы с вашим стеком, превращая хаос в процессах в стабильный и безопасный цифровой механизм.",
+        en: "I automate business logic and build reliable IT environments. Expert in n8n workflows and CRM integrations (HubSpot & others). From Docker containerization to secure VPN setup, I provide end-to-end infrastructure that eliminates routine and ensures data security."
     },
-
     /** Текст и состояние виджета статуса */
     status: {
         text: {
@@ -31,6 +30,66 @@ export const siteConfig = {
         telegram: "https://t.me/vlvdvlvd",
         github: "https://github.com/vadosishe",
     },
+
+    /** Список навыков (для TechMarquee) */
+    skills: [
+        {
+            name: "React & Next.js",
+            description: {
+                ru: "Создаю быстрые и SEO-оптимизированные веб-приложения",
+                en: "Building fast and SEO-optimized web applications"
+            },
+            icon: "Atom"
+        },
+        {
+            name: "TypeScript",
+            description: {
+                ru: "Строгая типизация для надежного и масштабируемого кода",
+                en: "Strict typing for reliable and scalable code"
+            },
+            icon: "Code2"
+        },
+        {
+            name: "HubSpot",
+            description: {
+                ru: "Глубокая кастомизация CRM, создание кастомных карточек и автоматизаций",
+                en: "Deep CRM customization, building custom cards and automations"
+            },
+            icon: "Database"
+        },
+        {
+            name: "n8n & Make",
+            description: {
+                ru: "Проектирование сложных сценариев интеграции и автоматизации бизнес-процессов",
+                en: "Designing complex integration scenarios and business process automations"
+            },
+            icon: "Workflow"
+        },
+        {
+            name: "Tailwind CSS",
+            description: {
+                ru: "Верстка современных и адаптивных интерфейсов",
+                en: "Styling modern and responsive interfaces"
+            },
+            icon: "Palette"
+        },
+        {
+            name: "Node.js",
+            description: {
+                ru: "Разработка надежных API и серверной логики",
+                en: "Developing robust APIs and server-side logic"
+            },
+            icon: "Server"
+        },
+        {
+            name: "Framer Motion",
+            description: {
+                ru: "Оживление интерфейсов с помощью плавных анимаций",
+                en: "Bringing interfaces to life with smooth animations"
+            },
+            icon: "Sparkles"
+        }
+    ],
 
     /** Список оборудования (для GearWidget) */
     gear: [
@@ -87,6 +146,10 @@ export const siteConfig = {
             live: { ru: "Live", en: "Live" },
             noActivity: { ru: "Нет недавней активности", en: "No recent activity" },
             ago: { ru: "назад", en: "ago" },
+        },
+        skills: {
+            title: { ru: "Stack & Workflow", en: "Stack & Workflow" },
+            hoverPrompt: { ru: "Наведи на навык", en: "Hover over a skill" }
         },
         common: {
             copied: { ru: "Скопировано!", en: "Copied!" },
